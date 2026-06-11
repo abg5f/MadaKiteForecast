@@ -43,124 +43,72 @@
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* ── Mada Kite Forecast · Mikaza design system ── */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
+  /* shadcn tokens — mapped to Mikaza palette */
+  --background:           #fdfcf3;
+  --foreground:           #1a1a1a;
+  --card:                 #ffffff;
+  --card-foreground:      #1a1a1a;
+  --popover:              #ffffff;
+  --popover-foreground:   #1a1a1a;
+  --primary:              #5C7062;
+  --primary-foreground:   #ffffff;
+  --secondary:            #f7f6ed;
+  --secondary-foreground: #4a4a4a;
+  --muted:                #f7f6ed;
+  --muted-foreground:     #a8a098;
+  --accent:               #f7f6ed;
+  --accent-foreground:    #4a4a4a;
+  --destructive:          #dc2626;
+  --border:               #e8e4d8;
+  --input:                #f7f6ed;
+  --ring:                 #5C7062;
+  --radius:               1rem;
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-
-/* ── Mada Kite Forecast — design tokens ── */
-:root {
-  --background:         #fdfcf3;
-  --foreground:         #1a2a35;
-  --card:               #ffffff;
-  --card-foreground:    #1a2a35;
-  --popover:            #ffffff;
-  --popover-foreground: #1a2a35;
-  --primary:            #1a6fa8;
-  --primary-foreground: #ffffff;
-  --secondary:          #e4f1fb;
-  --secondary-foreground: #1a6fa8;
-  --muted:              #f0f6fb;
-  --muted-foreground:   #6b8fa8;
-  --accent:             #e4f1fb;
-  --accent-foreground:  #1a6fa8;
-  --destructive:        #dc2626;
-  --border:             #d4e5f5;
-  --input:              #e8f2fc;
-  --ring:               #1a6fa8;
-  --radius:             1rem;
-
-  /* Custom */
-  --brand:        #1a6fa8;
-  --brand-hover:  #155d8e;
+  /* Mikaza brand tokens */
+  --brand:        #5C7062;
+  --brand-hover:  #4a5c50;
   --bg:           #fdfcf3;
-  --surface:      #eef5fb;
-  --text-2:       #3a5a70;
-  --r-pill:       99px;
-  --r-card:       16px;
-  --shadow-card:  0 1px 6px rgba(26,111,168,0.08);
+  --surface:      #f7f6ed;
+  --border-soft:  #f0ede3;
+  --text:         #1a1a1a;
+  --text-2:       #4a4a4a;
+  --label:        #6b6456;
+  --muted-text:   #a8a098;
+  --faint:        #c4b8b0;
+
+  /* Semantic */
+  --success:      #059669;
+  --success-soft: #d1fae5;
+  --warning:      #f59e0b;
+  --warning-soft: #fef3c7;
+  --danger:       #dc2626;
+  --danger-soft:  #fee2e2;
+  --info:         #2866ce;
+  --info-soft:    #dbeafe;
+
+  /* Radii */
+  --r-pill:  99px;
+  --r-card:  16px;
+  --r-sm:    10px;
+
+  /* Shadows */
+  --shadow-card: 0 1px 4px rgba(0,0,0,0.06);
+  --shadow-sm:   0 1px 2px rgba(0,0,0,0.04);
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
+  * { @apply border-border outline-ring/50; }
   html, body {
     height: 100%;
-    @apply font-sans;
     overscroll-behavior: none;
+    @apply font-sans;
   }
   body {
     background: var(--bg);
-    color: var(--foreground);
+    color: var(--text);
   }
 }

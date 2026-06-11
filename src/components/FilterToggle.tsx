@@ -1,5 +1,6 @@
 "use client"
 
+import { useLayoutEffect, useRef, useState } from "react"
 import type { ModelType, AggregatedForecast } from "@/lib/api-clients"
 
 export type SourceFilter = "average" | "openmeteo" | "stormglass" | "yr"
@@ -18,49 +19,82 @@ const MODELS: { value: ModelType; label: string }[] = [
   { value: "AROME", label: "AROME" },
 ]
 
-interface PillTabsProps<T extends string> {
-  options: { value: T; label: string; disabled?: boolean }[]
+interface GliderTabsProps<T extends string> {
+  options: { value: T; label: string; disabled?: boolean; title?: string }[]
   value: T
   onChange: (v: T) => void
   small?: boolean
 }
 
-function PillTabs<T extends string>({ options, value, onChange, small }: PillTabsProps<T>) {
+function GliderTabs<T extends string>({ options, value, onChange, small }: GliderTabsProps<T>) {
+  const refs = useRef<(HTMLButtonElement | null)[]>([])
+  const [glider, setGlider] = useState({ left: 0, width: 0 })
+  const activeIdx = options.findIndex((o) => o.value === value)
+
+  useLayoutEffect(() => {
+    const el = refs.current[activeIdx]
+    if (el) setGlider({ left: el.offsetLeft, width: el.offsetWidth })
+  }, [activeIdx, options.length])
+
   return (
     <div
       style={{
+        position: "relative",
         display: "flex",
         background: "var(--surface)",
         borderRadius: "var(--r-pill)",
         padding: 3,
-        gap: 2,
+        gap: 0,
       }}
     >
-      {options.map((opt) => {
-        const active = value === opt.value
-        return (
-          <button
-            key={opt.value}
-            onClick={() => !opt.disabled && onChange(opt.value)}
-            disabled={opt.disabled}
-            style={{
-              flex: 1,
-              height: small ? 30 : 36,
-              borderRadius: "var(--r-pill)",
-              border: "none",
-              background: active ? "var(--brand)" : "transparent",
-              color: active ? "#fff" : opt.disabled ? "var(--border)" : "var(--muted-foreground)",
-              fontWeight: active ? 600 : 400,
-              fontSize: small ? 12 : 13,
-              cursor: opt.disabled ? "default" : "pointer",
-              transition: "background 0.18s, color 0.18s",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {opt.label}
-          </button>
-        )
-      })}
+      {/* Glider */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          top: 3,
+          left: glider.left,
+          width: glider.width,
+          height: small ? 28 : 34,
+          borderRadius: "var(--r-pill)",
+          background: "var(--brand)",
+          boxShadow: "0 1px 3px rgba(0,0,0,0.15)",
+          transition: "left 0.22s cubic-bezier(0.4,0,0.2,1), width 0.22s cubic-bezier(0.4,0,0.2,1)",
+          pointerEvents: "none",
+        }}
+      />
+
+      {options.map((opt, i) => (
+        <button
+          key={opt.value}
+          ref={(el) => { refs.current[i] = el }}
+          onClick={() => !opt.disabled && onChange(opt.value)}
+          disabled={opt.disabled}
+          title={opt.title}
+          style={{
+            flex: 1,
+            height: small ? 28 : 34,
+            borderRadius: "var(--r-pill)",
+            border: "none",
+            background: "transparent",
+            color: opt.disabled
+              ? "var(--faint)"
+              : opt.value === value
+              ? "#fff"
+              : "var(--muted-text)",
+            fontWeight: opt.value === value ? 600 : 400,
+            fontSize: small ? 12 : 13,
+            cursor: opt.disabled ? "default" : "pointer",
+            position: "relative",
+            zIndex: 1,
+            transition: "color 0.18s",
+            whiteSpace: "nowrap",
+            padding: "0 8px",
+          }}
+        >
+          {opt.label}
+        </button>
+      ))}
     </div>
   )
 }
@@ -74,23 +108,31 @@ interface Props {
 }
 
 export default function FilterToggle({ source, model, onSourceChange, onModelChange, data }: Props) {
-  const sourceOptions = SOURCES.map((s) => ({
-    ...s,
-    disabled:
+  const errors = data?.errors ?? {}
+
+  const sourceOptions = SOURCES.map((s) => {
+    const disabled =
       s.value === "stormglass" ? !data?.stormglass :
-      s.value === "yr"         ? !data?.yr         : false,
-  }))
+      s.value === "yr"         ? !data?.yr         : false
+    const errMsg = errors[s.value === "stormglass" ? "Stormglass" : "Yr.no"]
+    return {
+      ...s,
+      disabled,
+      title: disabled && errMsg ? errMsg : undefined,
+    }
+  })
 
   const modelOptions = MODELS.map((m) => ({
     ...m,
     disabled: data?.openMeteo?.[m.value] == null,
+    title: errors[m.value] ?? undefined,
   }))
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-      <PillTabs options={sourceOptions} value={source} onChange={onSourceChange} />
+      <GliderTabs options={sourceOptions} value={source} onChange={onSourceChange} />
       {source === "openmeteo" && (
-        <PillTabs options={modelOptions} value={model} onChange={onModelChange} small />
+        <GliderTabs options={modelOptions} value={model} onChange={onModelChange} small />
       )}
     </div>
   )
