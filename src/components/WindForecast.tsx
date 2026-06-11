@@ -1,73 +1,126 @@
 "use client"
 
 import { useEffect, useState, useCallback } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Skeleton } from "@/components/ui/skeleton"
 import FilterToggle, { type SourceFilter } from "./FilterToggle"
 import type { AggregatedForecast, HourlyForecast, ModelType } from "@/lib/api-clients"
 
 const POLL_INTERVAL = 30 * 60 * 1000
 
-function windCondition(speed: number): { label: string; color: string } {
-  if (speed < 15) return { label: "Léger",     color: "bg-blue-100 text-blue-800" }
-  if (speed < 25) return { label: "Modéré",    color: "bg-green-100 text-green-800" }
-  if (speed < 35) return { label: "Bon",       color: "bg-yellow-100 text-yellow-800" }
-  if (speed < 45) return { label: "Fort",      color: "bg-orange-100 text-orange-800" }
-  return              { label: "Très fort", color: "bg-red-100 text-red-800" }
+// Kite-specific wind scale in knots
+function windCondition(kts: number): { label: string; bg: string; color: string } {
+  if (kts < 8)  return { label: "Calme",    bg: "#e0f0ff", color: "#4a7fa8" }
+  if (kts < 14) return { label: "Léger",    bg: "#dbeafe", color: "#1d6fa5" }
+  if (kts < 22) return { label: "Idéal ✓",  bg: "#d1fae5", color: "#065f46" }
+  if (kts < 30) return { label: "Fort",     bg: "#fef3c7", color: "#92400e" }
+  if (kts < 38) return { label: "Très fort",bg: "#ffedd5", color: "#9a3412" }
+  return              { label: "Danger",   bg: "#fee2e2", color: "#b91c1c" }
 }
 
 function dirLabel(deg: number): string {
   return ["N", "NE", "E", "SE", "S", "SO", "O", "NO"][Math.round(deg / 45) % 8]
 }
 
-function WindArrow({ deg }: { deg: number }) {
+function Skeleton({ lines = 6 }: { lines?: number }) {
   return (
-    <span
-      className="inline-block text-base leading-none select-none"
-      style={{ transform: `rotate(${deg}deg)` }}
-      title={`${deg}°`}
-    >
-      ↑
-    </span>
+    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      {Array.from({ length: lines }).map((_, i) => (
+        <div
+          key={i}
+          style={{
+            height: 52,
+            borderRadius: "var(--r-card)",
+            background: "var(--surface)",
+            animation: "pulse 1.5s ease-in-out infinite",
+            opacity: 0.7 - i * 0.05,
+          }}
+        />
+      ))}
+    </div>
   )
 }
 
-function ForecastRow({ f }: { f: HourlyForecast }) {
+function ForecastRow({ f, index }: { f: HourlyForecast; index: number }) {
   const cond = windCondition(f.windSpeed)
   const date = new Date(f.time)
+  const isNewDay = index === 0 || new Date(f.time).getDate() !== new Date(
+    new Date(f.time).getTime() - 3600_000
+  ).getDate()
   const day  = date.toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "short" })
   const hour = date.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
 
   return (
-    <div className="flex items-center gap-3 py-2 border-b last:border-0">
-      <div className="w-28 shrink-0 text-sm">
-        <div className="font-medium">{day}</div>
-        <div className="text-muted-foreground">{hour}</div>
-      </div>
-      <WindArrow deg={f.windDir} />
-      <span className="text-xs text-muted-foreground w-8">{dirLabel(f.windDir)}</span>
-      <div className="flex-1">
-        <span className="text-lg font-bold">{f.windSpeed}</span>
-        <span className="text-xs text-muted-foreground ml-1">km/h</span>
-        {f.windGust > f.windSpeed + 2 && (
-          <span className="ml-2 text-sm text-muted-foreground">
-            rafales <span className="font-semibold text-foreground">{f.windGust}</span>
-          </span>
-        )}
-      </div>
-      <Badge className={cond.color + " border-0 shrink-0"}>{cond.label}</Badge>
-    </div>
-  )
-}
+    <>
+      {isNewDay && index > 0 && (
+        <div style={{ height: 1, background: "var(--border)", margin: "4px 0" }} />
+      )}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          padding: "10px 14px",
+          borderRadius: "var(--r-card)",
+          background: "var(--card)",
+          boxShadow: "var(--shadow-card)",
+          border: "1px solid var(--border)",
+        }}
+      >
+        {/* Date/heure */}
+        <div style={{ width: 60, flexShrink: 0 }}>
+          <div style={{ fontSize: 12, fontWeight: 600, color: "var(--foreground)" }}>{day}</div>
+          <div style={{ fontSize: 11, color: "var(--muted-foreground)", marginTop: 1 }}>{hour}</div>
+        </div>
 
-function LoadingRows() {
-  return (
-    <div className="space-y-3">
-      {Array.from({ length: 8 }).map((_, i) => (
-        <Skeleton key={i} className="h-10 w-full" />
-      ))}
-    </div>
+        {/* Direction */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: 32, flexShrink: 0 }}>
+          <span
+            style={{
+              display: "inline-block",
+              fontSize: 16,
+              lineHeight: 1,
+              color: "var(--brand)",
+              transform: `rotate(${f.windDir}deg)`,
+              transition: "transform 0.3s",
+            }}
+            title={`${f.windDir}°`}
+          >
+            ↑
+          </span>
+          <span style={{ fontSize: 10, color: "var(--muted-foreground)", marginTop: 2, fontWeight: 600 }}>
+            {dirLabel(f.windDir)}
+          </span>
+        </div>
+
+        {/* Vitesse */}
+        <div style={{ flex: 1 }}>
+          <span style={{ fontSize: 22, fontWeight: 700, color: "var(--foreground)", lineHeight: 1 }}>
+            {f.windSpeed}
+          </span>
+          <span style={{ fontSize: 11, color: "var(--muted-foreground)", marginLeft: 3 }}>kts</span>
+          {f.windGust > f.windSpeed + 2 && (
+            <span style={{ marginLeft: 8, fontSize: 12, color: "var(--muted-foreground)" }}>
+              rafales{" "}
+              <span style={{ fontWeight: 600, color: "var(--text-2)" }}>{f.windGust}</span>
+            </span>
+          )}
+        </div>
+
+        {/* Badge condition */}
+        <span
+          style={{
+            fontSize: 11,
+            fontWeight: 700,
+            padding: "3px 10px",
+            borderRadius: "var(--r-pill)",
+            background: cond.bg,
+            color: cond.color,
+            flexShrink: 0,
+          }}
+        >
+          {cond.label}
+        </span>
+      </div>
+    </>
   )
 }
 
@@ -97,80 +150,81 @@ export default function WindForecast() {
     return () => clearInterval(id)
   }, [fetchData])
 
-  // Resolve the active dataset from filter state
   const activeSource =
     source === "average"    ? data?.average :
     source === "stormglass" ? data?.stormglass :
     source === "yr"         ? data?.yr :
                               data?.openMeteo?.[model]
 
-  const forecasts  = activeSource?.forecasts?.slice(0, 48) ?? []
+  const forecasts   = activeSource?.forecasts?.slice(0, 48) ?? []
   const sourceLabel = activeSource?.label ?? ""
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
-      <CardHeader className="pb-2">
-        <div className="flex items-start justify-between gap-2">
-          <div>
-            <CardTitle className="text-xl">Pointe Faula · Le Vauclin</CardTitle>
-            <p className="text-sm text-muted-foreground mt-0.5">Martinique — prévisions de vent</p>
-          </div>
-          {data?.fetchedAt && (
-            <p className="text-xs text-muted-foreground shrink-0 pt-1">
-              {new Date(data.fetchedAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+    <div>
+      {/* Filtres */}
+      <FilterToggle
+        source={source}
+        model={model}
+        onSourceChange={setSource}
+        onModelChange={setModel}
+        data={data}
+      />
+
+      {/* Label source + heure */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "10px 0 12px" }}>
+        <span style={{ fontSize: 12, color: "var(--muted-foreground)", fontWeight: 500 }}>
+          {sourceLabel}
+        </span>
+        {data?.fetchedAt && (
+          <span style={{ fontSize: 11, color: "var(--muted-foreground)" }}>
+            Mis à jour {new Date(data.fetchedAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+          </span>
+        )}
+      </div>
+
+      {/* États */}
+      {loading && <Skeleton />}
+
+      {!loading && error && (
+        <div style={{
+          textAlign: "center", padding: "40px 16px",
+          background: "var(--card)", borderRadius: "var(--r-card)",
+          border: "1px solid var(--border)",
+        }}>
+          <p style={{ fontWeight: 600, color: "var(--destructive)" }}>Données indisponibles</p>
+          <p style={{ fontSize: 13, color: "var(--muted-foreground)", marginTop: 4 }}>{error}</p>
+        </div>
+      )}
+
+      {!loading && !error && forecasts.length === 0 && (
+        <div style={{
+          textAlign: "center", padding: "40px 16px",
+          background: "var(--card)", borderRadius: "var(--r-card)",
+          border: "1px solid var(--border)",
+        }}>
+          <p style={{ fontSize: 32, opacity: 0.3 }}>🌬️</p>
+          <p style={{ color: "var(--muted-foreground)", marginTop: 8 }}>Aucune prévision disponible</p>
+        </div>
+      )}
+
+      {!loading && forecasts.length > 0 && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          {forecasts.map((f, i) => (
+            <ForecastRow key={f.time} f={f} index={i} />
+          ))}
+        </div>
+      )}
+
+      {/* Erreurs partielles */}
+      {data?.errors && Object.keys(data.errors).length > 0 && (
+        <div style={{ marginTop: 16, padding: "10px 14px", borderRadius: "var(--r-card)", background: "var(--surface)" }}>
+          {Object.entries(data.errors).map(([src, msg]) => (
+            <p key={src} style={{ fontSize: 11, color: "var(--muted-foreground)", lineHeight: 1.6 }}>
+              <span style={{ fontWeight: 600 }}>{src}</span> indisponible : {msg}
             </p>
-          )}
+          ))}
         </div>
-
-        <div className="mt-3">
-          <FilterToggle
-            source={source}
-            model={model}
-            onSourceChange={setSource}
-            onModelChange={setModel}
-            data={data}
-          />
-        </div>
-
-        {sourceLabel && (
-          <p className="text-xs text-muted-foreground mt-1 text-right">{sourceLabel}</p>
-        )}
-      </CardHeader>
-
-      <CardContent>
-        {loading && <LoadingRows />}
-
-        {!loading && error && (
-          <div className="text-center py-8 text-destructive">
-            <p className="font-medium">Données indisponibles</p>
-            <p className="text-sm text-muted-foreground mt-1">{error}</p>
-          </div>
-        )}
-
-        {!loading && !error && forecasts.length === 0 && (
-          <p className="text-center py-8 text-muted-foreground">
-            Aucune prévision disponible pour cette source.
-          </p>
-        )}
-
-        {!loading && forecasts.length > 0 && (
-          <div>
-            {forecasts.map((f) => (
-              <ForecastRow key={f.time} f={f} />
-            ))}
-          </div>
-        )}
-
-        {data?.errors && Object.keys(data.errors).length > 0 && (
-          <div className="mt-4 pt-3 border-t space-y-1">
-            {Object.entries(data.errors).map(([src, msg]) => (
-              <p key={src} className="text-xs text-muted-foreground">
-                <span className="font-medium">{src}</span> indisponible : {msg}
-              </p>
-            ))}
-          </div>
-        )}
-      </CardContent>
-    </Card>
+      )}
+    </div>
   )
 }

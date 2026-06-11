@@ -117,14 +117,50 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* ── Mada Kite Forecast — design tokens ── */
+:root {
+  --background:         #fdfcf3;
+  --foreground:         #1a2a35;
+  --card:               #ffffff;
+  --card-foreground:    #1a2a35;
+  --popover:            #ffffff;
+  --popover-foreground: #1a2a35;
+  --primary:            #1a6fa8;
+  --primary-foreground: #ffffff;
+  --secondary:          #e4f1fb;
+  --secondary-foreground: #1a6fa8;
+  --muted:              #f0f6fb;
+  --muted-foreground:   #6b8fa8;
+  --accent:             #e4f1fb;
+  --accent-foreground:  #1a6fa8;
+  --destructive:        #dc2626;
+  --border:             #d4e5f5;
+  --input:              #e8f2fc;
+  --ring:               #1a6fa8;
+  --radius:             1rem;
+
+  /* Custom */
+  --brand:        #1a6fa8;
+  --brand-hover:  #155d8e;
+  --bg:           #fdfcf3;
+  --surface:      #eef5fb;
+  --text-2:       #3a5a70;
+  --r-pill:       99px;
+  --r-card:       16px;
+  --shadow-card:  0 1px 6px rgba(26,111,168,0.08);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
-  html {
+  html, body {
+    height: 100%;
     @apply font-sans;
+    overscroll-behavior: none;
+  }
+  body {
+    background: var(--bg);
+    color: var(--foreground);
   }
 }

@@ -3,8 +3,8 @@ export type SourceName = "openmeteo" | "stormglass" | "yr"
 
 export interface HourlyForecast {
   time: string       // ISO timestamp
-  windSpeed: number  // km/h
-  windGust: number   // km/h
+  windSpeed: number  // knots
+  windGust: number   // knots
   windDir: number    // degrees 0-360
 }
 
@@ -43,7 +43,7 @@ export async function fetchOpenMeteo(model: ModelType): Promise<SourceForecast> 
     latitude: String(LAT),
     longitude: String(LNG),
     hourly: "windspeed_10m,winddirection_10m,windgusts_10m",
-    windspeed_unit: "kmh",
+    windspeed_unit: "kn",
     timezone: "America/Martinique",
     forecast_days: "7",
     models: id,
@@ -124,8 +124,8 @@ export async function fetchStormglass(): Promise<SourceForecast> {
       if (speedMs == null || dir == null) return null
       return {
         time:      new Date(h.time).toISOString(),
-        windSpeed: Math.round(speedMs * 3.6),
-        windGust:  Math.round((gustMs ?? speedMs) * 3.6),
+        windSpeed: Math.round(speedMs * 1.944),
+        windGust:  Math.round((gustMs ?? speedMs) * 1.944),
         windDir:   Math.round(dir),
       }
     })
@@ -163,8 +163,8 @@ export async function fetchYr(): Promise<SourceForecast> {
         entry.data?.next_1_hours?.details?.wind_speed_of_gust ?? d.wind_speed
       return {
         time:      new Date(entry.time).toISOString(),
-        windSpeed: Math.round(d.wind_speed * 3.6),
-        windGust:  Math.round(gust * 3.6),
+        windSpeed: Math.round(d.wind_speed * 1.944),
+        windGust:  Math.round(gust * 1.944),
         windDir:   Math.round(d.wind_from_direction),
       }
     })
