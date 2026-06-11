@@ -54,19 +54,13 @@ const ITEMS: Item[] = [
     title: "Comment fonctionne l'agrégation ?",
     body: () => (
       <div>
-        {T.p("À chaque requête, 5 appels API sont lancés en parallèle. La vue « Moyenne » calcule :")}
+        {T.p("À chaque requête, les appels API sont lancés en parallèle. Les données sont mises en cache 30 minutes côté serveur. Le client interroge l'API toutes les 30 minutes automatiquement.")}
+        {T.h("Système d'étoiles")}
         {T.ul([
-          "<strong>Vitesse</strong> : moyenne arithmétique des modèles disponibles (les erreurs sont ignorées)",
-          "<strong>Direction</strong> : moyenne circulaire via vecteurs unitaires — évite la discontinuité 359°/1°",
-          "<strong>Rafales</strong> : moyenne des maximums rapportés",
-        ])}
-        {T.p("Les données sont mises en cache 30 minutes côté serveur. Le client interroge l'API toutes les 30 minutes automatiquement.")}
-        {T.h("Système d'étoiles (vue Calendrier)")}
-        {T.ul([
-          "Aucune étoile — vent < 10 noeuds (insuffisant pour kiter)",
-          "★ — 10 à 12 noeuds (praticable avec grande aile)",
-          "★★ — 12 à 14 noeuds (session correcte)",
-          "★★★ — ≥ 14 noeuds (session idéale Pointe Faula)",
+          "Calme — vent < 11 nœuds (insuffisant pour kiter)",
+          "★ — 11 à 12 nœuds (praticable avec grande aile)",
+          "★★ — 13 à 14 nœuds (session correcte)",
+          "★★★ — ≥ 15 nœuds (session idéale Pointe Faula)",
         ])}
       </div>
     ),
