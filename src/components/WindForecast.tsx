@@ -1,108 +1,134 @@
 "use client"
 
-import { useEffect, useState, useCallback } from "react"
+import { useEffect, useState, useCallback, useLayoutEffect, useRef } from "react"
 import FilterToggle, { type SourceFilter } from "./FilterToggle"
+import WeekCalendar from "./WeekCalendar"
 import type { AggregatedForecast, HourlyForecast, ModelType } from "@/lib/api-clients"
 
 const POLL_INTERVAL = 30 * 60 * 1000
 
-// Kite wind scale in knots
+// ── Wind scale (knots, kite-specific) ────────────────────────────────────────
+
 function windCond(kts: number) {
-  if (kts < 8)  return { label: "Calme",     bg: "var(--surface)",     color: "var(--muted-text)" }
-  if (kts < 14) return { label: "Léger",     bg: "var(--info-soft)",   color: "var(--info)" }
-  if (kts < 22) return { label: "Idéal",     bg: "var(--success-soft)",color: "var(--success)" }
-  if (kts < 30) return { label: "Fort",      bg: "var(--warning-soft)",color: "var(--warning)" }
-  if (kts < 38) return { label: "Très fort", bg: "#ffedd5",            color: "#c2410c" }
-  return              { label: "Danger",    bg: "var(--danger-soft)",  color: "var(--danger)" }
+  if (kts < 8)  return { label: "Calme",     bg: "var(--surface)",      color: "var(--muted-text)" }
+  if (kts < 14) return { label: "Léger",     bg: "var(--info-soft)",    color: "var(--info)" }
+  if (kts < 22) return { label: "Idéal",     bg: "var(--success-soft)", color: "var(--success)" }
+  if (kts < 30) return { label: "Fort",      bg: "var(--warning-soft)", color: "var(--warning)" }
+  if (kts < 38) return { label: "Très fort", bg: "#ffedd5",             color: "#c2410c" }
+  return              { label: "Danger",    bg: "var(--danger-soft)",   color: "var(--danger)" }
 }
 
-const DIR_LABELS = ["N", "NE", "E", "SE", "S", "SO", "O", "NO"]
-function dirLabel(deg: number) { return DIR_LABELS[Math.round(deg / 45) % 8] }
+const DIR = ["N", "NE", "E", "SE", "S", "SO", "O", "NO"]
+const dirLabel = (deg: number) => DIR[Math.round(deg / 45) % 8]
 
-// Group forecasts by calendar day
-function groupByDay(forecasts: HourlyForecast[]): { dateKey: string; label: string; rows: HourlyForecast[] }[] {
-  const map = new Map<string, HourlyForecast[]>()
-  for (const f of forecasts) {
-    const d = new Date(f.time)
-    const key = d.toISOString().slice(0, 10)
-    if (!map.has(key)) map.set(key, [])
-    map.get(key)!.push(f)
-  }
-  return Array.from(map.entries()).map(([key, rows]) => ({
-    dateKey: key,
-    label: new Date(key + "T12:00:00").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" }),
-    rows,
-  }))
-}
+// ── View toggle (pilule glissière 2 options) ──────────────────────────────────
 
-function SkeletonRows() {
+type AppView = "forecast" | "calendar"
+
+function ViewToggle({ view, onChange }: { view: AppView; onChange: (v: AppView) => void }) {
+  const refs = useRef<(HTMLButtonElement | null)[]>([])
+  const [g, setG] = useState({ left: 0, width: 0 })
+  const idx = view === "forecast" ? 0 : 1
+
+  useLayoutEffect(() => {
+    const el = refs.current[idx]
+    if (el) setG({ left: el.offsetLeft, width: el.offsetWidth })
+  }, [idx])
+
+  const opts: { value: AppView; label: string }[] = [
+    { value: "forecast", label: "Prévisions" },
+    { value: "calendar", label: "Calendrier" },
+  ]
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-      {Array.from({ length: 5 }).map((_, i) => (
-        <div key={i} style={{
-          height: 52, borderRadius: "var(--r-card)",
-          background: "var(--surface)",
-          opacity: 1 - i * 0.12,
-          animation: "pulse 1.5s ease-in-out infinite",
-        }} />
+    <div style={{
+      position: "relative", display: "flex",
+      background: "var(--surface)", borderRadius: "var(--r-pill)", padding: 3,
+    }}>
+      <div aria-hidden style={{
+        position: "absolute", top: 3,
+        left: g.left, width: g.width, height: 36,
+        borderRadius: "var(--r-pill)", background: "var(--brand)",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.15)",
+        transition: "left .22s cubic-bezier(.4,0,.2,1), width .22s cubic-bezier(.4,0,.2,1)",
+        pointerEvents: "none",
+      }} />
+      {opts.map((o, i) => (
+        <button
+          key={o.value}
+          ref={el => { refs.current[i] = el }}
+          onClick={() => onChange(o.value)}
+          style={{
+            flex: 1, height: 36, borderRadius: "var(--r-pill)",
+            border: "none", background: "transparent",
+            color: view === o.value ? "#fff" : "var(--muted-text)",
+            fontWeight: view === o.value ? 600 : 400,
+            fontSize: 14, cursor: "pointer",
+            position: "relative", zIndex: 1,
+            transition: "color .18s",
+          }}
+        >
+          {o.label}
+        </button>
       ))}
     </div>
   )
+}
+
+// ── Forecast list ─────────────────────────────────────────────────────────────
+
+function groupByDay(forecasts: HourlyForecast[]) {
+  const map = new Map<string, HourlyForecast[]>()
+  for (const f of forecasts) {
+    const key = new Date(f.time).toISOString().slice(0, 10)
+    if (!map.has(key)) map.set(key, [])
+    map.get(key)!.push(f)
+  }
+  return Array.from(map.entries()).map(([key, rows]) => ({ key, rows }))
 }
 
 function ForecastRow({ f }: { f: HourlyForecast }) {
   const cond = windCond(f.windSpeed)
   const d = new Date(f.time)
   const hour = d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
-  const hasGust = f.windGust > f.windSpeed + 2
 
   return (
     <div style={{
-      display: "flex", alignItems: "center", gap: 10,
-      padding: "10px 14px",
+      display: "flex", alignItems: "center", gap: 12,
+      padding: "10px 16px",
       borderBottom: "1px solid var(--border-soft)",
     }}>
-      {/* Heure */}
-      <span style={{
-        width: 44, flexShrink: 0,
-        fontSize: 13, fontWeight: 500, color: "var(--text-2)",
-      }}>
+      <span style={{ width: 44, flexShrink: 0, fontSize: 13, fontWeight: 500, color: "var(--text-2)" }}>
         {hour}
       </span>
 
-      {/* Direction */}
       <div style={{ width: 36, flexShrink: 0, textAlign: "center" }}>
         <div style={{
-          fontSize: 15, lineHeight: 1, color: "var(--brand)",
+          fontSize: 14, lineHeight: 1, color: "var(--brand)",
           display: "inline-block",
           transform: `rotate(${f.windDir}deg)`,
-          transition: "transform 0.3s ease",
         }}>↑</div>
-        <div style={{ fontSize: 10, fontWeight: 700, color: "var(--muted-text)", letterSpacing: "0.04em", marginTop: 1 }}>
+        <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.04em", color: "var(--muted-text)", marginTop: 1 }}>
           {dirLabel(f.windDir)}
         </div>
       </div>
 
-      {/* Vitesse */}
       <div style={{ flex: 1, display: "flex", alignItems: "baseline", gap: 4 }}>
         <span style={{ fontSize: 22, fontWeight: 700, lineHeight: 1, color: "var(--text)" }}>
           {f.windSpeed}
         </span>
         <span style={{ fontSize: 11, color: "var(--muted-text)" }}>kts</span>
-        {hasGust && (
+        {f.windGust > f.windSpeed + 2 && (
           <span style={{ fontSize: 12, color: "var(--label)", marginLeft: 4 }}>
-            rafales <strong style={{ color: "var(--text-2)" }}>{f.windGust}</strong>
+            rafales <strong style={{ color: "var(--text-2)", fontWeight: 600 }}>{f.windGust}</strong>
           </span>
         )}
       </div>
 
-      {/* Badge */}
       <span style={{
         fontSize: 11, fontWeight: 700,
-        padding: "3px 10px",
-        borderRadius: "var(--r-pill)",
-        background: cond.bg, color: cond.color,
-        flexShrink: 0,
+        padding: "3px 10px", borderRadius: "var(--r-pill)",
+        background: cond.bg, color: cond.color, flexShrink: 0,
       }}>
         {cond.label}
       </span>
@@ -119,33 +145,44 @@ function DayCard({ label, rows }: { label: string; rows: HourlyForecast[] }) {
       boxShadow: "var(--shadow-card)",
       overflow: "hidden",
     }}>
-      {/* En-tête du jour */}
       <div style={{
-        padding: "8px 14px",
+        padding: "7px 16px",
         background: "var(--surface)",
         borderBottom: "1px solid var(--border)",
       }}>
         <span style={{
-          fontSize: 11, fontWeight: 600,
-          textTransform: "uppercase", letterSpacing: "0.06em",
-          color: "var(--label)",
+          fontSize: 11, fontWeight: 600, textTransform: "uppercase",
+          letterSpacing: "0.06em", color: "var(--label)",
         }}>
           {label}
         </span>
       </div>
-
-      {/* Lignes */}
-      <div>
-        {rows.map((f) => <ForecastRow key={f.time} f={f} />)}
-      </div>
+      {rows.map(f => <ForecastRow key={f.time} f={f} />)}
     </div>
   )
 }
+
+function SkeletonRows() {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <div key={i} style={{
+          height: 52, borderRadius: "var(--r-card)",
+          background: "var(--surface)", opacity: 1 - i * 0.12,
+          animation: "pulse 1.5s ease-in-out infinite",
+        }} />
+      ))}
+    </div>
+  )
+}
+
+// ── Main component ────────────────────────────────────────────────────────────
 
 export default function WindForecast() {
   const [data, setData]       = useState<AggregatedForecast | null>(null)
   const [error, setError]     = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [view, setView]       = useState<AppView>("forecast")
   const [source, setSource]   = useState<SourceFilter>("average")
   const [model, setModel]     = useState<ModelType>("GFS")
 
@@ -173,23 +210,25 @@ export default function WindForecast() {
     source === "yr"      ? data?.yr :
                            data?.openMeteo?.[model]
 
-  const groups = groupByDay(activeSource?.forecasts?.slice(0, 48) ?? [])
+  const forecasts  = activeSource?.forecasts?.slice(0, 48) ?? []
+  const srcLabel   = activeSource?.label ?? ""
+  const dayGroups  = groupByDay(forecasts)
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
 
-      {/* Filtres */}
+      {/* Vue toggle */}
+      <ViewToggle view={view} onChange={setView} />
+
+      {/* Filtres source/modèle */}
       <div>
         <FilterToggle
           source={source} model={model}
           onSourceChange={setSource} onModelChange={setModel}
           data={data}
         />
-        {/* Meta : source + heure */}
         <div style={{ display: "flex", justifyContent: "space-between", marginTop: 8 }}>
-          <span style={{ fontSize: 11, color: "var(--muted-text)", fontWeight: 500 }}>
-            {activeSource?.label ?? ""}
-          </span>
+          <span style={{ fontSize: 11, color: "var(--muted-text)", fontWeight: 500 }}>{srcLabel}</span>
           {data?.fetchedAt && (
             <span style={{ fontSize: 11, color: "var(--muted-text)" }}>
               Mis à jour {new Date(data.fetchedAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
@@ -198,14 +237,13 @@ export default function WindForecast() {
         </div>
       </div>
 
-      {/* États */}
+      {/* Contenu */}
       {loading && <SkeletonRows />}
 
       {!loading && error && (
         <div style={{
           padding: "32px 20px", textAlign: "center",
-          background: "var(--card)", borderRadius: "var(--r-card)",
-          border: "1px solid var(--border)",
+          background: "var(--card)", borderRadius: "var(--r-card)", border: "1px solid var(--border)",
         }}>
           <div style={{ fontSize: 28, opacity: 0.3, marginBottom: 8 }}>⚠️</div>
           <p style={{ fontWeight: 600, color: "var(--danger)" }}>Données indisponibles</p>
@@ -213,21 +251,33 @@ export default function WindForecast() {
         </div>
       )}
 
-      {!loading && !error && groups.length === 0 && (
-        <div style={{
-          padding: "40px 20px", textAlign: "center",
-          background: "var(--card)", borderRadius: "var(--r-card)",
-          border: "1px solid var(--border)",
-        }}>
-          <div style={{ fontSize: 32, opacity: 0.25, marginBottom: 8 }}>🌬️</div>
-          <p style={{ color: "var(--muted-text)" }}>Aucune prévision disponible</p>
-        </div>
+      {!loading && !error && view === "forecast" && (
+        dayGroups.length === 0 ? (
+          <div style={{
+            padding: "40px 20px", textAlign: "center",
+            background: "var(--card)", borderRadius: "var(--r-card)", border: "1px solid var(--border)",
+          }}>
+            <div style={{ fontSize: 32, opacity: 0.25, marginBottom: 8 }}>🌬️</div>
+            <p style={{ color: "var(--muted-text)" }}>Aucune prévision disponible</p>
+          </div>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {dayGroups.map(({ key, rows }) => (
+              <DayCard
+                key={key}
+                label={new Date(key + "T12:00:00").toLocaleDateString("fr-FR", {
+                  weekday: "long", day: "numeric", month: "long",
+                })}
+                rows={rows}
+              />
+            ))}
+          </div>
+        )
       )}
 
-      {/* Prévisions groupées par jour */}
-      {!loading && groups.length > 0 && groups.map((g) => (
-        <DayCard key={g.dateKey} label={g.label} rows={g.rows} />
-      ))}
+      {!loading && !error && view === "calendar" && (
+        <WeekCalendar forecasts={forecasts} sourceLabel={srcLabel} />
+      )}
 
       {/* Erreurs partielles */}
       {data?.errors && Object.keys(data.errors).length > 0 && (
