@@ -36,6 +36,13 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: "/favicon.svg",
+    apple: "/apple-icon",
+  },
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Mada Kite",
   },
 }
 
