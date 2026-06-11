@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mada Kite Forecast — Prévisions kitesurf Madagascar",
-  description: "Agrégateur Windy + Windguru pour les spots de kitesurf à Madagascar",
+  title: "Mada Kite Forecast — Prévisions kitesurf Martinique",
+  description: "Agrégateur Windy + Windguru pour les spots de kitesurf en Martinique",
 };
 
 export default function RootLayout({
