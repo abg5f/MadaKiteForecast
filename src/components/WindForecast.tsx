@@ -210,7 +210,10 @@ export default function WindForecast() {
     source === "yr"      ? data?.yr :
                            data?.openMeteo?.[model]
 
-  const forecasts  = activeSource?.forecasts?.slice(0, 48) ?? []
+  const forecasts = (activeSource?.forecasts ?? []).filter(f => {
+    const h = new Date(f.time).getHours()
+    return h >= 7 && h <= 19
+  })
   const srcLabel   = activeSource?.label ?? ""
   const dayGroups  = groupByDay(forecasts)
 

@@ -17,39 +17,76 @@ export default function Home() {
     <div style={{ minHeight: "100dvh", display: "flex", flexDirection: "column" }}>
 
       {/* ── Header ── */}
-      <header style={{ backgroundColor: "var(--brand)", padding: "20px 16px 0", flexShrink: 0 }}>
+      <header style={{ backgroundColor: "var(--brand)", padding: "20px 16px 16px", flexShrink: 0 }}>
         <div style={{ maxWidth: 640, margin: "0 auto" }}>
 
-          {/* Titre */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          {/* Titre app */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <MartiniqueFlag size={26} />
               <div>
                 <h1 style={{ color: "#fff", fontSize: 20, fontWeight: 700, lineHeight: 1.2, letterSpacing: "-0.01em" }}>
                   Mada Kite Forecast
                 </h1>
-                <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 13, marginTop: 2 }}>
+                <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 13, marginTop: 2 }}>
                   Pointe Faula · Martinique
                 </p>
               </div>
             </div>
-            <span style={{ color: "rgba(255,255,255,0.35)", fontSize: 11, letterSpacing: "0.04em", textTransform: "uppercase" }}>
+            <span style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, letterSpacing: "0.06em", textTransform: "uppercase" }}>
               nœuds
             </span>
           </div>
 
-          {/* Station live */}
-          <div style={{ marginTop: 16, borderRadius: "10px 10px 0 0", overflow: "hidden", background: "rgba(255,255,255,0.08)" }}>
+          {/* ── Balise Live ── */}
+          <div style={{
+            borderRadius: "var(--r-card)",
+            overflow: "hidden",
+            background: "rgba(255,255,255,0.1)",
+            border: "1px solid rgba(255,255,255,0.15)",
+          }}>
+            {/* Barre titre */}
+            <div style={{
+              display: "flex", alignItems: "center", justifyContent: "space-between",
+              padding: "8px 12px",
+              borderBottom: "1px solid rgba(255,255,255,0.1)",
+            }}>
+              <span style={{
+                color: "rgba(255,255,255,0.9)", fontSize: 12, fontWeight: 600,
+                letterSpacing: "0.01em",
+              }}>
+                Balise Live · Airfly
+              </span>
+
+              {/* Indicateur EN DIRECT */}
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <span style={{
+                  width: 7, height: 7, borderRadius: "50%",
+                  background: "#4ade80",
+                  display: "inline-block",
+                  animation: "live-pulse 1.4s ease-in-out infinite",
+                }} />
+                <span style={{
+                  fontSize: 10, fontWeight: 700, letterSpacing: "0.08em",
+                  textTransform: "uppercase", color: "rgba(255,255,255,0.45)",
+                }}>
+                  En direct
+                </span>
+              </div>
+            </div>
+
+            {/* Iframe station */}
             <iframe
               src="https://www.windguru.cz/wgs-iframe.php?s=4164&wj=knots&tj=c&tmprh=1&avg_min=0&date_format=Y-m-d%20H%3Ai%3As%20T"
               width="100%"
-              height="72"
+              height="68"
               frameBorder="0"
               scrolling="no"
               title="Station vent Pointe Faula — en direct"
               style={{ display: "block" }}
             />
           </div>
+
         </div>
       </header>
 
@@ -63,7 +100,7 @@ export default function Home() {
       {/* ── Footer ── */}
       <footer style={{ borderTop: "1px solid var(--border)", padding: "12px 16px", textAlign: "center" }}>
         <p style={{ fontSize: 11, color: "var(--muted-text)" }}>
-          Open-Meteo · Stormglass · Yr.no · Station Windguru #4164
+          Open-Meteo · Yr.no · Station Windguru #4164
         </p>
         <p style={{ fontSize: 11, color: "var(--muted-text)", marginTop: 3 }}>
           Fait par{" "}
