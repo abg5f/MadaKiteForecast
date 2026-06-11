@@ -248,7 +248,7 @@ export default function WindForecast() {
   const [loading, setLoading] = useState(true)
   const [view, setView]       = useState<AppView>("forecast")
   const [source, setSource]   = useState<SourceFilter>("openmeteo")
-  const [model, setModel]     = useState<ModelType>("GFS")
+  const [model, setModel]     = useState<ModelType>("AROME")
 
   const fetchData = useCallback(async () => {
     try {

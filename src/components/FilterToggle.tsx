@@ -11,10 +11,10 @@ const SOURCES: { value: SourceFilter; label: string }[] = [
 ]
 
 const MODELS: { value: ModelType; label: string }[] = [
+  { value: "AROME", label: "AROME" },
   { value: "GFS",   label: "GFS" },
   { value: "ICON",  label: "ICON" },
   { value: "ERA5",  label: "ERA5" },
-  { value: "AROME", label: "AROME" },
 ]
 
 interface GliderTabsProps<T extends string> {
