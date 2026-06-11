@@ -1,157 +1,212 @@
+export type ModelType = "GFS" | "ICON" | "ERA5" | "AROME"
+export type SourceName = "openmeteo" | "stormglass" | "yr"
+
 export interface HourlyForecast {
-  time: string        // ISO timestamp
-  windSpeed: number   // km/h
-  windGust: number    // km/h
-  windDir: number     // degrees 0-360
+  time: string       // ISO timestamp
+  windSpeed: number  // km/h
+  windGust: number   // km/h
+  windDir: number    // degrees 0-360
 }
 
 export interface SourceForecast {
-  source: "windy" | "windguru"
+  source: SourceName
+  model?: ModelType
+  label: string
   updatedAt: string
   forecasts: HourlyForecast[]
 }
 
 export interface AggregatedForecast {
-  windy: SourceForecast | null
-  windguru: SourceForecast | null
+  openMeteo: Partial<Record<ModelType, SourceForecast | null>>
+  stormglass: SourceForecast | null
+  yr: SourceForecast | null
   average: SourceForecast | null
   fetchedAt: string
+  errors?: Record<string, string>
 }
 
 const LAT = parseFloat(process.env.SPOT_LAT ?? "14.55")
 const LNG = parseFloat(process.env.SPOT_LNG ?? "-60.83")
 
-// ---------- Windy ----------
-export async function fetchWindy(): Promise<SourceForecast> {
-  const apiKey = process.env.WINDY_API_KEY
-  if (!apiKey || apiKey === "your_windy_api_key_here") {
-    throw new Error("WINDY_API_KEY not configured")
-  }
+const OM_MODELS: Record<ModelType, { id: string; label: string }> = {
+  GFS:   { id: "gfs_seamless",             label: "GFS · NOAA" },
+  ICON:  { id: "icon_seamless",            label: "ICON · DWD" },
+  ERA5:  { id: "era5",                     label: "ERA5 · ECMWF" },
+  AROME: { id: "meteofrance_arpege_world", label: "AROME · MeteoFrance" },
+}
 
-  const res = await fetch("https://api.windy.com/api/point-forecast/v2", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      lat: LAT,
-      lon: LNG,
-      model: "gfs",
-      parameters: ["wind", "windGust"],
-      levels: ["surface"],
-      key: apiKey,
-    }),
+// ---------- Open-Meteo ----------
+export async function fetchOpenMeteo(model: ModelType): Promise<SourceForecast> {
+  const { id, label } = OM_MODELS[model]
+
+  const qs = new URLSearchParams({
+    latitude: String(LAT),
+    longitude: String(LNG),
+    hourly: "windspeed_10m,winddirection_10m,windgusts_10m",
+    windspeed_unit: "kmh",
+    timezone: "America/Martinique",
+    forecast_days: "7",
+    models: id,
+  })
+
+  const res = await fetch(`https://api.open-meteo.com/v1/forecast?${qs}`, {
     next: { revalidate: 1800 },
   })
 
-  if (!res.ok) throw new Error(`Windy API error: ${res.status}`)
+  if (!res.ok) throw new Error(`Open-Meteo (${model}) HTTP ${res.status}`)
 
   const data = await res.json()
+  if (data.error) throw new Error(`Open-Meteo (${model}): ${data.reason}`)
 
-  // Windy returns parallel arrays keyed by parameter
-  const timestamps: number[] = data.ts ?? []
-  const uWind: number[] = data["wind_u-surface"] ?? []
-  const vWind: number[] = data["wind_v-surface"] ?? []
-  const gusts: number[] = data["windGust-surface"] ?? []
+  const times: string[]           = data.hourly?.time ?? []
+  const speeds: (number | null)[] = data.hourly?.windspeed_10m ?? []
+  const dirs: (number | null)[]   = data.hourly?.winddirection_10m ?? []
+  const gusts: (number | null)[]  = data.hourly?.windgusts_10m ?? []
 
-  const forecasts: HourlyForecast[] = timestamps.map((ts, i) => {
-    const u = uWind[i] ?? 0
-    const v = vWind[i] ?? 0
-    const speedMs = Math.sqrt(u * u + v * v)
-    const dirRad = Math.atan2(-u, -v)
-    const dir = ((dirRad * 180) / Math.PI + 360) % 360
+  const forecasts: HourlyForecast[] = times
+    .map((t, i) => ({
+      time: new Date(t).toISOString(),
+      windSpeed: speeds[i] ?? null,
+      windGust:  gusts[i]  ?? speeds[i] ?? null,
+      windDir:   dirs[i]   ?? null,
+    }))
+    .filter((f): f is HourlyForecast =>
+      f.windSpeed != null && f.windDir != null && f.windGust != null
+    )
+    .map((f) => ({
+      ...f,
+      windSpeed: Math.round(f.windSpeed),
+      windGust:  Math.round(f.windGust),
+      windDir:   Math.round(f.windDir),
+    }))
 
-    return {
-      time: new Date(ts * 1000).toISOString(),
-      windSpeed: Math.round(speedMs * 3.6),
-      windGust: Math.round((gusts[i] ?? speedMs) * 3.6),
-      windDir: Math.round(dir),
-    }
+  return { source: "openmeteo", model, label, updatedAt: new Date().toISOString(), forecasts }
+}
+
+// ---------- Stormglass (10 req/day free → in-memory 6h cache) ----------
+let _sgCache: { data: SourceForecast; ts: number } | null = null
+const SG_TTL = 6 * 3600_000
+
+export async function fetchStormglass(): Promise<SourceForecast> {
+  const now = Date.now()
+  if (_sgCache && now - _sgCache.ts < SG_TTL) return _sgCache.data
+
+  const apiKey = process.env.STORMGLASS_API_KEY
+  if (!apiKey) throw new Error("STORMGLASS_API_KEY not configured")
+
+  const start = Math.floor(now / 1000)
+  const end   = start + 7 * 86400
+
+  const qs = new URLSearchParams({
+    lat: String(LAT),
+    lng: String(LNG),
+    params: "windSpeed,windDirection,gust",
+    start: String(start),
+    end:   String(end),
   })
 
-  return { source: "windy", updatedAt: new Date().toISOString(), forecasts }
-}
+  const res = await fetch(`https://api.stormglass.io/v2/weather/point?${qs}`, {
+    headers: { Authorization: apiKey },
+  })
 
-// ---------- Windguru ----------
-export async function fetchWindguru(): Promise<SourceForecast> {
-  const apiKey = process.env.WINDGURU_API_KEY
-  const spotId = process.env.WINDGURU_SPOT_ID ?? "64"
-
-  if (!apiKey || apiKey === "your_windguru_api_key_here") {
-    throw new Error("WINDGURU_API_KEY not configured")
-  }
-
-  // Windguru v2 JSON API
-  const url = `https://www.windguru.cz/int/iapi.php?q=forecast&id_spot=${spotId}&id_model=3&username=api&password=${apiKey}&format=json`
-  const res = await fetch(url, { next: { revalidate: 1800 } })
-
-  if (!res.ok) throw new Error(`Windguru API error: ${res.status}`)
+  if (!res.ok) throw new Error(`Stormglass HTTP ${res.status}`)
 
   const data = await res.json()
 
-  const hours: number[] = data.fcst?.[0]?.hr_weekno ?? []
-  const speeds: number[] = data.fcst?.[0]?.WINDSPD ?? []
-  const gusts: number[] = data.fcst?.[0]?.GUST ?? []
-  const dirs: number[] = data.fcst?.[0]?.WINDDIR ?? []
-  const initDate: string = data.fcst?.[0]?.initdate ?? new Date().toISOString()
+  const pickSg = (arr: { source: string; value: number }[] | undefined) =>
+    (arr?.find((x) => x.source === "sg") ?? arr?.[0])?.value ?? null
 
-  const base = new Date(initDate)
-
-  const forecasts: HourlyForecast[] = hours.map((h, i) => ({
-    time: new Date(base.getTime() + h * 3600000).toISOString(),
-    windSpeed: Math.round((speeds[i] ?? 0) * 3.6),   // m/s → km/h
-    windGust: Math.round((gusts[i] ?? speeds[i] ?? 0) * 3.6),
-    windDir: Math.round(dirs[i] ?? 0),
-  }))
-
-  return { source: "windguru", updatedAt: new Date().toISOString(), forecasts }
-}
-
-// ---------- Average ----------
-export function computeAverage(
-  windy: SourceForecast | null,
-  windguru: SourceForecast | null
-): SourceForecast | null {
-  const sources = [windy, windguru].filter(Boolean) as SourceForecast[]
-  if (sources.length === 0) return null
-  if (sources.length === 1) return { ...sources[0], source: "windy" }  // reuse type
-
-  // Align by nearest timestamp within 1h window
-  const base = sources[0].forecasts
-  const other = sources[1].forecasts
-
-  const averaged: HourlyForecast[] = base.map((entry) => {
-    const t = new Date(entry.time).getTime()
-    const match = other.reduce((prev, cur) => {
-      const da = Math.abs(new Date(prev.time).getTime() - t)
-      const db = Math.abs(new Date(cur.time).getTime() - t)
-      return db < da ? cur : prev
+  const forecasts: HourlyForecast[] = (data.hours ?? [])
+    .map((h: { time: string; windSpeed: { source: string; value: number }[]; windDirection: { source: string; value: number }[]; gust: { source: string; value: number }[] }) => {
+      const speedMs = pickSg(h.windSpeed)
+      const dir     = pickSg(h.windDirection)
+      const gustMs  = pickSg(h.gust)
+      if (speedMs == null || dir == null) return null
+      return {
+        time:      new Date(h.time).toISOString(),
+        windSpeed: Math.round(speedMs * 3.6),
+        windGust:  Math.round((gustMs ?? speedMs) * 3.6),
+        windDir:   Math.round(dir),
+      }
     })
+    .filter(Boolean) as HourlyForecast[]
 
-    const gap = Math.abs(new Date(match.time).getTime() - t)
-    if (gap > 3600_000) return entry  // no close match, use base
+  const result: SourceForecast = {
+    source: "stormglass",
+    label: "Stormglass",
+    updatedAt: new Date().toISOString(),
+    forecasts,
+  }
+  _sgCache = { data: result, ts: now }
+  return result
+}
 
-    // Average angles correctly via unit vectors
-    const toRad = (d: number) => (d * Math.PI) / 180
-    const avgDir =
-      ((Math.atan2(
-        (Math.sin(toRad(entry.windDir)) + Math.sin(toRad(match.windDir))) / 2,
-        (Math.cos(toRad(entry.windDir)) + Math.cos(toRad(match.windDir))) / 2
-      ) *
-        180) /
-        Math.PI +
-        360) %
-      360
-
-    return {
-      time: entry.time,
-      windSpeed: Math.round((entry.windSpeed + match.windSpeed) / 2),
-      windGust: Math.round((entry.windGust + match.windGust) / 2),
-      windDir: Math.round(avgDir),
+// ---------- Yr.no (Norwegian Met, free, no key) ----------
+export async function fetchYr(): Promise<SourceForecast> {
+  const res = await fetch(
+    `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${LAT}&lon=${LNG}`,
+    {
+      headers: { "User-Agent": "MadaKiteForecast/1.0 github.com/abg5f/MadaKiteForecast" },
+      next: { revalidate: 1800 },
     }
-  })
+  )
+
+  if (!res.ok) throw new Error(`Yr.no HTTP ${res.status}`)
+
+  const data = await res.json()
+
+  const forecasts: HourlyForecast[] = (data.properties?.timeseries ?? [])
+    .map((entry: { time: string; data: { instant: { details: { wind_speed?: number; wind_from_direction?: number; wind_speed_of_gust?: number } }; next_1_hours?: { details?: { wind_speed_of_gust?: number } } } }) => {
+      const d = entry.data?.instant?.details
+      if (!d?.wind_speed || d?.wind_from_direction == null) return null
+      const gust =
+        entry.data?.next_1_hours?.details?.wind_speed_of_gust ?? d.wind_speed
+      return {
+        time:      new Date(entry.time).toISOString(),
+        windSpeed: Math.round(d.wind_speed * 3.6),
+        windGust:  Math.round(gust * 3.6),
+        windDir:   Math.round(d.wind_from_direction),
+      }
+    })
+    .filter(Boolean) as HourlyForecast[]
 
   return {
-    source: "windy",   // field unused for "average" display
+    source: "yr",
+    label: "Yr · Met Norway",
     updatedAt: new Date().toISOString(),
-    forecasts: averaged,
+    forecasts,
   }
+}
+
+// ---------- Multi-source average (circular mean for direction) ----------
+export function computeAverage(sources: (SourceForecast | null)[]): SourceForecast | null {
+  const valid = sources.filter((s): s is SourceForecast => s != null && s.forecasts.length > 0)
+  if (valid.length === 0) return null
+  if (valid.length === 1) return valid[0]
+
+  const toRad = (d: number) => (d * Math.PI) / 180
+  const base  = valid[0].forecasts
+
+  const forecasts: HourlyForecast[] = base.map((entry) => {
+    const t = new Date(entry.time).getTime()
+    const matches: HourlyForecast[] = [entry]
+
+    for (let i = 1; i < valid.length; i++) {
+      const closest = valid[i].forecasts.reduce((a, b) =>
+        Math.abs(new Date(b.time).getTime() - t) < Math.abs(new Date(a.time).getTime() - t) ? b : a
+      )
+      if (Math.abs(new Date(closest.time).getTime() - t) <= 3600_000) matches.push(closest)
+    }
+
+    const n         = matches.length
+    const avgSpeed  = Math.round(matches.reduce((s, m) => s + m.windSpeed, 0) / n)
+    const avgGust   = Math.round(matches.reduce((s, m) => s + m.windGust, 0) / n)
+    const sinSum    = matches.reduce((s, m) => s + Math.sin(toRad(m.windDir)), 0)
+    const cosSum    = matches.reduce((s, m) => s + Math.cos(toRad(m.windDir)), 0)
+    const avgDir    = Math.round(((Math.atan2(sinSum / n, cosSum / n) * 180) / Math.PI + 360) % 360)
+
+    return { time: entry.time, windSpeed: avgSpeed, windGust: avgGust, windDir: avgDir }
+  })
+
+  return { source: "openmeteo", label: "Moyenne", updatedAt: new Date().toISOString(), forecasts }
 }
