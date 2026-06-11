@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Faula Wind — Prévisions kitesurf Martinique",
-  description: "Agrégateur Windy + Windguru pour la Pointe Faula, Le Vauclin",
+  title: "Mada Kite Forecast — Prévisions kitesurf Madagascar",
+  description: "Agrégateur Windy + Windguru pour les spots de kitesurf à Madagascar",
 };
 
 export default function RootLayout({
