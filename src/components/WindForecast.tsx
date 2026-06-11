@@ -247,7 +247,7 @@ export default function WindForecast() {
   const [error, setError]     = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [view, setView]       = useState<AppView>("forecast")
-  const [source, setSource]   = useState<SourceFilter>("average")
+  const [source, setSource]   = useState<SourceFilter>("openmeteo")
   const [model, setModel]     = useState<ModelType>("GFS")
 
   const fetchData = useCallback(async () => {
@@ -286,9 +286,7 @@ export default function WindForecast() {
   const { todayKey, currentHour } = getMartiniqueState()
 
   const activeSource =
-    source === "average" ? data?.average :
-    source === "yr"      ? data?.yr :
-                           data?.openMeteo?.[model]
+    source === "yr" ? data?.yr : data?.openMeteo?.[model]
 
   const forecasts = (activeSource?.forecasts ?? []).filter(f => {
     const h = new Date(f.time).getUTCHours()

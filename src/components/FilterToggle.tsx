@@ -3,10 +3,9 @@
 import { useLayoutEffect, useRef, useState } from "react"
 import type { ModelType, AggregatedForecast } from "@/lib/api-clients"
 
-export type SourceFilter = "average" | "openmeteo" | "yr"
+export type SourceFilter = "openmeteo" | "yr"
 
 const SOURCES: { value: SourceFilter; label: string }[] = [
-  { value: "average",   label: "Moyenne" },
   { value: "openmeteo", label: "Open-Meteo" },
   { value: "yr",        label: "Yr.no" },
 ]
