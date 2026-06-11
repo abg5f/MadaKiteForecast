@@ -1,5 +1,5 @@
 import WindForecast from "@/components/WindForecast"
-import FAQ from "@/components/FAQ"
+import AppMenu from "@/components/AppMenu"
 
 function KiteLogo({ size = 40 }: { size?: number }) {
   return (
@@ -54,9 +54,7 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <span style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              nœuds
-            </span>
+            <AppMenu />
           </div>
 
           {/* ── Balise Live ── */}
@@ -116,17 +114,6 @@ export default function Home() {
           <WindForecast />
         </div>
       </main>
-
-      {/* ── FAQ ── */}
-      <section style={{
-        background: "var(--surface)",
-        borderTop: "1px solid var(--border)",
-        padding: "28px 16px 40px",
-      }}>
-        <div style={INNER}>
-          <FAQ />
-        </div>
-      </section>
 
       {/* ── Footer ── */}
       <footer style={{ borderTop: "1px solid var(--border)", padding: "14px 16px", textAlign: "center", background: "var(--bg)" }}>
