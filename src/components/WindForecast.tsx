@@ -7,7 +7,16 @@ import type { AggregatedForecast, HourlyForecast, ModelType } from "@/lib/api-cl
 
 const POLL_INTERVAL = 30 * 60 * 1000
 
-// ── Wind scale (knots, kite-specific) ────────────────────────────────────────
+// Open-Meteo returns "America/Martinique" local times stored as UTC on the server (UTC+0).
+// So getUTCHours() gives back the Martinique hour. Current MQ hour = UTC - 4.
+function getMartiniqueState() {
+  const now = new Date()
+  const todayKey = now.toLocaleDateString("en-CA", { timeZone: "America/Martinique" })
+  const currentHour = (now.getUTCHours() - 4 + 24) % 24
+  return { todayKey, currentHour }
+}
+
+// ── Wind scale (knots) ────────────────────────────────────────────────────────
 
 function windCond(kts: number) {
   if (kts < 8)  return { label: "Calme",     bg: "var(--surface)",      color: "var(--muted-text)" }
@@ -15,13 +24,13 @@ function windCond(kts: number) {
   if (kts < 22) return { label: "Idéal",     bg: "var(--success-soft)", color: "var(--success)" }
   if (kts < 30) return { label: "Fort",      bg: "var(--warning-soft)", color: "var(--warning)" }
   if (kts < 38) return { label: "Très fort", bg: "#ffedd5",             color: "#c2410c" }
-  return              { label: "Danger",    bg: "var(--danger-soft)",   color: "var(--danger)" }
+  return              { label: "Danger",     bg: "var(--danger-soft)",  color: "var(--danger)" }
 }
 
 const DIR = ["N", "NE", "E", "SE", "S", "SO", "O", "NO"]
 const dirLabel = (deg: number) => DIR[Math.round(deg / 45) % 8]
 
-// ── View toggle (pilule glissière 2 options) ──────────────────────────────────
+// ── View toggle ───────────────────────────────────────────────────────────────
 
 type AppView = "forecast" | "calendar"
 
@@ -42,7 +51,7 @@ function ViewToggle({ view, onChange }: { view: AppView; onChange: (v: AppView) 
 
   return (
     <div style={{
-      position: "relative", display: "flex",
+      position: "relative", display: "flex", flex: 1,
       background: "var(--surface)", borderRadius: "var(--r-pill)", padding: 3,
     }}>
       <div aria-hidden style={{
@@ -75,7 +84,7 @@ function ViewToggle({ view, onChange }: { view: AppView; onChange: (v: AppView) 
   )
 }
 
-// ── Forecast list ─────────────────────────────────────────────────────────────
+// ── Forecast rows ─────────────────────────────────────────────────────────────
 
 function groupByDay(forecasts: HourlyForecast[]) {
   const map = new Map<string, HourlyForecast[]>()
@@ -87,24 +96,46 @@ function groupByDay(forecasts: HourlyForecast[]) {
   return Array.from(map.entries()).map(([key, rows]) => ({ key, rows }))
 }
 
-function ForecastRow({ f }: { f: HourlyForecast }) {
+function ForecastRow({
+  f, isPast, isNow,
+}: {
+  f: HourlyForecast; isPast?: boolean; isNow?: boolean
+}) {
   const cond = windCond(f.windSpeed)
-  const d = new Date(f.time)
-  const hour = d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
+  const h = new Date(f.time).getUTCHours()
+  const hour = `${String(h).padStart(2, "0")}:00`
 
   return (
-    <div style={{
-      display: "flex", alignItems: "center", gap: 12,
-      padding: "10px 16px",
-      borderBottom: "1px solid var(--border-soft)",
-    }}>
-      <span style={{ width: 44, flexShrink: 0, fontSize: 13, fontWeight: 500, color: "var(--text-2)" }}>
+    <div
+      id={isNow ? "forecast-current" : undefined}
+      style={{
+        display: "flex", alignItems: "center", gap: 12,
+        padding: "10px 16px",
+        borderBottom: "1px solid var(--border-soft)",
+        opacity: isPast ? 0.35 : 1,
+        position: "relative",
+      }}
+    >
+      {isNow && (
+        <div style={{
+          position: "absolute", left: 0, top: 0, bottom: 0,
+          width: 3, borderRadius: "0 2px 2px 0",
+          background: "var(--brand)",
+        }} />
+      )}
+
+      <span style={{
+        width: 44, flexShrink: 0, fontSize: 13,
+        fontWeight: isNow ? 700 : 500,
+        color: isNow ? "var(--brand)" : "var(--text-2)",
+      }}>
         {hour}
       </span>
 
       <div style={{ width: 36, flexShrink: 0, textAlign: "center" }}>
         <div style={{
-          fontSize: 14, lineHeight: 1, color: "var(--brand)",
+          fontSize: 14, lineHeight: 1,
+          color: isPast ? "var(--muted-text)" : "var(--brand)",
           display: "inline-block",
           transform: `rotate(${f.windDir}deg)`,
         }}>↑</div>
@@ -114,13 +145,18 @@ function ForecastRow({ f }: { f: HourlyForecast }) {
       </div>
 
       <div style={{ flex: 1, display: "flex", alignItems: "baseline", gap: 4 }}>
-        <span style={{ fontSize: 22, fontWeight: 700, lineHeight: 1, color: "var(--text)" }}>
+        <span style={{
+          fontSize: 22, fontWeight: 700, lineHeight: 1,
+          color: isPast ? "var(--muted-text)" : "var(--text)",
+        }}>
           {f.windSpeed}
         </span>
         <span style={{ fontSize: 11, color: "var(--muted-text)" }}>kts</span>
         {f.windGust > f.windSpeed + 2 && (
           <span style={{ fontSize: 12, color: "var(--label)", marginLeft: 4 }}>
-            rafales <strong style={{ color: "var(--text-2)", fontWeight: 600 }}>{f.windGust}</strong>
+            rafales <strong style={{ color: isPast ? "var(--muted-text)" : "var(--text-2)", fontWeight: 600 }}>
+              {f.windGust}
+            </strong>
           </span>
         )}
       </div>
@@ -128,7 +164,9 @@ function ForecastRow({ f }: { f: HourlyForecast }) {
       <span style={{
         fontSize: 11, fontWeight: 700,
         padding: "3px 10px", borderRadius: "var(--r-pill)",
-        background: cond.bg, color: cond.color, flexShrink: 0,
+        background: isPast ? "var(--surface)" : cond.bg,
+        color: isPast ? "var(--muted-text)" : cond.color,
+        flexShrink: 0,
       }}>
         {cond.label}
       </span>
@@ -136,7 +174,13 @@ function ForecastRow({ f }: { f: HourlyForecast }) {
   )
 }
 
-function DayCard({ label, rows }: { label: string; rows: HourlyForecast[] }) {
+function DayCard({
+  label, rows, dayKey, todayKey, currentHour,
+}: {
+  label: string; rows: HourlyForecast[]
+  dayKey: string; todayKey: string; currentHour: number
+}) {
+  const isToday = dayKey === todayKey
   return (
     <div style={{
       background: "var(--card)",
@@ -149,15 +193,35 @@ function DayCard({ label, rows }: { label: string; rows: HourlyForecast[] }) {
         padding: "7px 16px",
         background: "var(--surface)",
         borderBottom: "1px solid var(--border)",
+        display: "flex", alignItems: "center", gap: 10,
       }}>
         <span style={{
           fontSize: 11, fontWeight: 600, textTransform: "uppercase",
-          letterSpacing: "0.06em", color: "var(--label)",
+          letterSpacing: "0.06em", color: "var(--label)", flex: 1,
         }}>
           {label}
         </span>
+        {isToday && (
+          <span style={{
+            fontSize: 10, fontWeight: 700, padding: "2px 8px",
+            borderRadius: "var(--r-pill)", background: "var(--brand)",
+            color: "#fff", letterSpacing: "0.05em", textTransform: "uppercase",
+          }}>
+            Aujourd'hui
+          </span>
+        )}
       </div>
-      {rows.map(f => <ForecastRow key={f.time} f={f} />)}
+      {rows.map(f => {
+        const h = new Date(f.time).getUTCHours()
+        return (
+          <ForecastRow
+            key={f.time}
+            f={f}
+            isPast={isToday && h < currentHour}
+            isNow={isToday && h === currentHour}
+          />
+        )
+      })}
     </div>
   )
 }
@@ -176,7 +240,7 @@ function SkeletonRows() {
   )
 }
 
-// ── Main component ────────────────────────────────────────────────────────────
+// ── Main ──────────────────────────────────────────────────────────────────────
 
 export default function WindForecast() {
   const [data, setData]       = useState<AggregatedForecast | null>(null)
@@ -205,25 +269,56 @@ export default function WindForecast() {
     return () => clearInterval(id)
   }, [fetchData])
 
+  // Scroll to current hour once data is ready
+  useEffect(() => {
+    if (!loading && data) {
+      setTimeout(() => {
+        document.getElementById("forecast-current")
+          ?.scrollIntoView({ behavior: "smooth", block: "center" })
+      }, 200)
+    }
+  }, [loading]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const scrollToNow = () =>
+    document.getElementById("forecast-current")
+      ?.scrollIntoView({ behavior: "smooth", block: "center" })
+
+  const { todayKey, currentHour } = getMartiniqueState()
+
   const activeSource =
     source === "average" ? data?.average :
     source === "yr"      ? data?.yr :
                            data?.openMeteo?.[model]
 
   const forecasts = (activeSource?.forecasts ?? []).filter(f => {
-    const h = new Date(f.time).getHours()
+    const h = new Date(f.time).getUTCHours()
     return h >= 7 && h <= 19
   })
-  const srcLabel   = activeSource?.label ?? ""
-  const dayGroups  = groupByDay(forecasts)
+  const srcLabel  = activeSource?.label ?? ""
+  const dayGroups = groupByDay(forecasts)
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
 
-      {/* Vue toggle */}
-      <ViewToggle view={view} onChange={setView} />
+      {/* Toggle vue + bouton Maintenant */}
+      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <ViewToggle view={view} onChange={setView} />
+        {view === "forecast" && (
+          <button
+            onClick={scrollToNow}
+            style={{
+              height: 42, padding: "0 14px", borderRadius: "var(--r-pill)",
+              border: "1.5px solid var(--border)", background: "var(--card)",
+              color: "var(--brand)", fontWeight: 600, fontSize: 13,
+              cursor: "pointer", flexShrink: 0, whiteSpace: "nowrap",
+            }}
+          >
+            ⏱ Maintenant
+          </button>
+        )}
+      </div>
 
-      {/* Filtres source/modèle */}
+      {/* Filtres */}
       <div>
         <FilterToggle
           source={source} model={model}
@@ -234,7 +329,9 @@ export default function WindForecast() {
           <span style={{ fontSize: 11, color: "var(--muted-text)", fontWeight: 500 }}>{srcLabel}</span>
           {data?.fetchedAt && (
             <span style={{ fontSize: 11, color: "var(--muted-text)" }}>
-              Mis à jour {new Date(data.fetchedAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}
+              Mis à jour {new Date(data.fetchedAt).toLocaleTimeString("fr-FR", {
+                hour: "2-digit", minute: "2-digit",
+              })}
             </span>
           )}
         </div>
@@ -268,6 +365,9 @@ export default function WindForecast() {
             {dayGroups.map(({ key, rows }) => (
               <DayCard
                 key={key}
+                dayKey={key}
+                todayKey={todayKey}
+                currentHour={currentHour}
                 label={new Date(key + "T12:00:00").toLocaleDateString("fr-FR", {
                   weekday: "long", day: "numeric", month: "long",
                 })}
@@ -282,7 +382,6 @@ export default function WindForecast() {
         <WeekCalendar forecasts={forecasts} sourceLabel={srcLabel} />
       )}
 
-      {/* Erreurs partielles */}
       {data?.errors && Object.keys(data.errors).length > 0 && (
         <div style={{
           padding: "10px 14px", borderRadius: "var(--r-sm)",
