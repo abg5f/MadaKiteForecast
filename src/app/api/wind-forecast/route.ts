@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server"
 import {
   fetchOpenMeteo,
-  fetchStormglass,
   fetchYr,
   computeAverage,
   type ModelType,
@@ -13,12 +12,11 @@ export const dynamic = "force-dynamic"
 const MODELS: ModelType[] = ["GFS", "ICON", "ERA5", "AROME"]
 
 export async function GET() {
-  const [gfsR, iconR, era5R, aromeR, sgR, yrR] = await Promise.allSettled([
+  const [gfsR, iconR, era5R, aromeR, yrR] = await Promise.allSettled([
     fetchOpenMeteo("GFS"),
     fetchOpenMeteo("ICON"),
     fetchOpenMeteo("ERA5"),
     fetchOpenMeteo("AROME"),
-    fetchStormglass(),
     fetchYr(),
   ])
 
@@ -30,14 +28,9 @@ export async function GET() {
     ])
   ) as AggregatedForecast["openMeteo"]
 
-  const stormglass = sgR.status === "fulfilled" ? sgR.value : null
-  const yr         = yrR.status === "fulfilled" ? yrR.value : null
+  const yr = yrR.status === "fulfilled" ? yrR.value : null
 
-  const allSources = [
-    ...Object.values(openMeteo).filter(Boolean),
-    stormglass,
-    yr,
-  ]
+  const allSources = [...Object.values(openMeteo).filter(Boolean), yr]
 
   if (allSources.length === 0) {
     return NextResponse.json({ error: "All sources unavailable" }, { status: 503 })
@@ -46,16 +39,14 @@ export async function GET() {
   const average = computeAverage(allSources)
 
   const errors: Record<string, string> = {}
-  if (gfsR.status   === "rejected") errors["GFS"]         = (gfsR.reason   as Error).message
-  if (iconR.status  === "rejected") errors["ICON"]        = (iconR.reason  as Error).message
-  if (era5R.status  === "rejected") errors["ERA5"]        = (era5R.reason  as Error).message
-  if (aromeR.status === "rejected") errors["AROME"]       = (aromeR.reason as Error).message
-  if (sgR.status    === "rejected") errors["Stormglass"]  = (sgR.reason    as Error).message
-  if (yrR.status    === "rejected") errors["Yr.no"]       = (yrR.reason    as Error).message
+  if (gfsR.status   === "rejected") errors["GFS"]   = (gfsR.reason   as Error).message
+  if (iconR.status  === "rejected") errors["ICON"]  = (iconR.reason  as Error).message
+  if (era5R.status  === "rejected") errors["ERA5"]  = (era5R.reason  as Error).message
+  if (aromeR.status === "rejected") errors["AROME"] = (aromeR.reason as Error).message
+  if (yrR.status    === "rejected") errors["Yr.no"] = (yrR.reason    as Error).message
 
   const payload: AggregatedForecast = {
     openMeteo,
-    stormglass,
     yr,
     average,
     fetchedAt: new Date().toISOString(),

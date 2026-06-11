@@ -3,12 +3,11 @@
 import { useLayoutEffect, useRef, useState } from "react"
 import type { ModelType, AggregatedForecast } from "@/lib/api-clients"
 
-export type SourceFilter = "average" | "openmeteo" | "stormglass" | "yr"
+export type SourceFilter = "average" | "openmeteo" | "yr"
 
 const SOURCES: { value: SourceFilter; label: string }[] = [
-  { value: "average",    label: "Moyenne" },
+  { value: "average",   label: "Moyenne" },
   { value: "openmeteo", label: "Open-Meteo" },
-  { value: "stormglass", label: "Stormglass" },
   { value: "yr",        label: "Yr.no" },
 ]
 
@@ -111,10 +110,8 @@ export default function FilterToggle({ source, model, onSourceChange, onModelCha
   const errors = data?.errors ?? {}
 
   const sourceOptions = SOURCES.map((s) => {
-    const disabled =
-      s.value === "stormglass" ? !data?.stormglass :
-      s.value === "yr"         ? !data?.yr         : false
-    const errMsg = errors[s.value === "stormglass" ? "Stormglass" : "Yr.no"]
+    const disabled = s.value === "yr" ? !data?.yr : false
+    const errMsg = s.value === "yr" ? errors["Yr.no"] : undefined
     return {
       ...s,
       disabled,

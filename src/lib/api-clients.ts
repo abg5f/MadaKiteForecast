@@ -1,5 +1,5 @@
 export type ModelType = "GFS" | "ICON" | "ERA5" | "AROME"
-export type SourceName = "openmeteo" | "stormglass" | "yr"
+export type SourceName = "openmeteo" | "yr"
 
 export interface HourlyForecast {
   time: string       // ISO timestamp
@@ -18,7 +18,6 @@ export interface SourceForecast {
 
 export interface AggregatedForecast {
   openMeteo: Partial<Record<ModelType, SourceForecast | null>>
-  stormglass: SourceForecast | null
   yr: SourceForecast | null
   average: SourceForecast | null
   fetchedAt: string
@@ -81,64 +80,6 @@ export async function fetchOpenMeteo(model: ModelType): Promise<SourceForecast> 
     }))
 
   return { source: "openmeteo", model, label, updatedAt: new Date().toISOString(), forecasts }
-}
-
-// ---------- Stormglass (10 req/day free → in-memory 6h cache) ----------
-let _sgCache: { data: SourceForecast; ts: number } | null = null
-const SG_TTL = 6 * 3600_000
-
-export async function fetchStormglass(): Promise<SourceForecast> {
-  const now = Date.now()
-  if (_sgCache && now - _sgCache.ts < SG_TTL) return _sgCache.data
-
-  const apiKey = process.env.STORMGLASS_API_KEY
-  if (!apiKey) throw new Error("STORMGLASS_API_KEY not configured")
-
-  const start = Math.floor(now / 1000)
-  const end   = start + 7 * 86400
-
-  const qs = new URLSearchParams({
-    lat: String(LAT),
-    lng: String(LNG),
-    params: "windSpeed,windDirection,gust",
-    start: String(start),
-    end:   String(end),
-  })
-
-  const res = await fetch(`https://api.stormglass.io/v2/weather/point?${qs}`, {
-    headers: { Authorization: apiKey },
-  })
-
-  if (!res.ok) throw new Error(`Stormglass HTTP ${res.status}`)
-
-  const data = await res.json()
-
-  const pickSg = (arr: { source: string; value: number }[] | undefined) =>
-    (arr?.find((x) => x.source === "sg") ?? arr?.[0])?.value ?? null
-
-  const forecasts: HourlyForecast[] = (data.hours ?? [])
-    .map((h: { time: string; windSpeed: { source: string; value: number }[]; windDirection: { source: string; value: number }[]; gust: { source: string; value: number }[] }) => {
-      const speedMs = pickSg(h.windSpeed)
-      const dir     = pickSg(h.windDirection)
-      const gustMs  = pickSg(h.gust)
-      if (speedMs == null || dir == null) return null
-      return {
-        time:      new Date(h.time).toISOString(),
-        windSpeed: Math.round(speedMs * 1.944),
-        windGust:  Math.round((gustMs ?? speedMs) * 1.944),
-        windDir:   Math.round(dir),
-      }
-    })
-    .filter(Boolean) as HourlyForecast[]
-
-  const result: SourceForecast = {
-    source: "stormglass",
-    label: "Stormglass",
-    updatedAt: new Date().toISOString(),
-    forecasts,
-  }
-  _sgCache = { data: result, ts: now }
-  return result
 }
 
 // ---------- Yr.no (Norwegian Met, free, no key) ----------

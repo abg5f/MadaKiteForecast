@@ -169,10 +169,9 @@ export default function WindForecast() {
   }, [fetchData])
 
   const activeSource =
-    source === "average"    ? data?.average :
-    source === "stormglass" ? data?.stormglass :
-    source === "yr"         ? data?.yr :
-                              data?.openMeteo?.[model]
+    source === "average" ? data?.average :
+    source === "yr"      ? data?.yr :
+                           data?.openMeteo?.[model]
 
   const groups = groupByDay(activeSource?.forecasts?.slice(0, 48) ?? [])
 
