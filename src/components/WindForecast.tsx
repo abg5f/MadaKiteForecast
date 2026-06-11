@@ -19,9 +19,10 @@ function getMartiniqueState() {
 // ── Wind scale (knots) ────────────────────────────────────────────────────────
 
 function windCond(kts: number) {
-  if (kts < 8)  return { label: "Calme",     bg: "var(--surface)",      color: "var(--muted-text)" }
-  if (kts < 14) return { label: "Léger",     bg: "var(--info-soft)",    color: "var(--info)" }
-  if (kts < 22) return { label: "Idéal",     bg: "var(--success-soft)", color: "var(--success)" }
+  if (kts < 11) return { label: "Calme",     bg: "var(--surface)",      color: "var(--muted-text)" }
+  if (kts < 13) return { label: "★",         bg: "var(--info-soft)",    color: "var(--info)" }
+  if (kts < 15) return { label: "★★",        bg: "var(--success-soft)", color: "var(--success)" }
+  if (kts < 22) return { label: "★★★",       bg: "var(--success-soft)", color: "var(--success)" }
   if (kts < 30) return { label: "Fort",      bg: "var(--warning-soft)", color: "var(--warning)" }
   if (kts < 38) return { label: "Très fort", bg: "#ffedd5",             color: "#c2410c" }
   return              { label: "Danger",     bg: "var(--danger-soft)",  color: "var(--danger)" }
