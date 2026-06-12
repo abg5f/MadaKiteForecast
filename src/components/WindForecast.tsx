@@ -6,7 +6,7 @@ import WeekCalendar from "./WeekCalendar"
 import type { AggregatedForecast, HourlyForecast, ModelType } from "@/lib/api-clients"
 import { useSpot } from "./SpotProvider"
 
-const POLL_INTERVAL = 30 * 60 * 1000
+const POLL_INTERVAL = 15 * 60 * 1000
 
 // Open-Meteo returns "America/Martinique" local times stored as UTC on the server (UTC+0).
 // So getUTCHours() gives back the Martinique hour. Current MQ hour = UTC - 4.

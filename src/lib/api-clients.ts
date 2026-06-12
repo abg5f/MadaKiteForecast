@@ -53,7 +53,7 @@ export async function fetchOpenMeteo(
   })
 
   const res = await fetch(`https://api.open-meteo.com/v1/forecast?${qs}`, {
-    next: { revalidate: 1800 },
+    next: { revalidate: 300 },
   })
 
   if (!res.ok) throw new Error(`Open-Meteo (${model}) HTTP ${res.status}`)

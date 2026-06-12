@@ -51,10 +51,19 @@ const ITEMS: Item[] = [
   {
     id: "how",
     emoji: "⚙️",
-    title: "Comment fonctionne l'agrégation ?",
+    title: "À quelle fréquence les données sont-elles mises à jour ?",
     body: () => (
       <div>
-        {T.p("À chaque requête, les appels API sont lancés en parallèle. Les données sont mises en cache 30 minutes côté serveur. Le client interroge l'API toutes les 30 minutes automatiquement.")}
+        {T.p("Les prévisions affichées viennent de modèles météo calculés par des organismes comme Météo-France, la NOAA (États-Unis) ou le service météo norvégien. Ces organismes relancent leurs calculs environ toutes les 3 à 6 heures — c'est une contrainte technique indépendante de notre app.")}
+        {T.h("Ce que fait l'app")}
+        {T.ul([
+          "Toutes les <strong>5 minutes</strong>, l'app vérifie si Open-Meteo a publié de nouvelles données",
+          "Votre téléphone rafraîchit automatiquement les prévisions toutes les <strong>15 minutes</strong>",
+          "En pratique, vous avez toujours les prévisions les plus récentes disponibles — avec au maximum 15 minutes de décalage",
+        ])}
+        {T.h("Pourquoi pas en temps réel ?")}
+        {T.p("Open-Meteo, le service que nous utilisons, ne publie pas les prévisions au fil de l'eau : il attend qu'un calcul complet soit terminé (toutes les 3 à 6h) avant de mettre ses données à jour. Impossible d'aller plus vite que ça côté prévisions.")}
+        {T.p("La balise live Airfly à Pointe Faula, elle, affiche le vent réel en ce moment — indépendamment des prévisions.")}
         {T.h("Système d'étoiles")}
         {T.ul([
           "Calme — vent < 11 nœuds (insuffisant pour kiter)",
