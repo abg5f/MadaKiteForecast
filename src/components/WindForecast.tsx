@@ -454,7 +454,7 @@ export default function WindForecast() {
           </div>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {dayGroups.map(({ key, rows }) => (
+            {dayGroups.filter(({ key }) => !(isEvening && key === todayKey)).map(({ key, rows }) => (
               <DayCard
                 key={key}
                 dayKey={key}
