@@ -14,7 +14,9 @@ function getMartiniqueState() {
   const now = new Date()
   const todayKey = now.toLocaleDateString("en-CA", { timeZone: "America/Martinique" })
   const currentHour = (now.getUTCHours() - 4 + 24) % 24
-  return { todayKey, currentHour }
+  const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
+  const tomorrowKey = tomorrow.toLocaleDateString("en-CA", { timeZone: "America/Martinique" })
+  return { todayKey, tomorrowKey, currentHour, isEvening: currentHour >= 20 }
 }
 
 // ── Wind scale (knots) ────────────────────────────────────────────────────────
@@ -99,9 +101,9 @@ function groupByDay(forecasts: HourlyForecast[]) {
 }
 
 function ForecastRow({
-  f, isPast, isNow,
+  f, isPast, isNow, isScrollTarget,
 }: {
-  f: HourlyForecast; isPast?: boolean; isNow?: boolean
+  f: HourlyForecast; isPast?: boolean; isNow?: boolean; isScrollTarget?: boolean
 }) {
   const cond = windCond(f.windSpeed)
   const h = new Date(f.time).getUTCHours()
@@ -109,7 +111,7 @@ function ForecastRow({
 
   return (
     <div
-      id={isNow ? "forecast-current" : undefined}
+      id={isNow ? "forecast-current" : isScrollTarget ? "forecast-next-7" : undefined}
       style={{
         display: "flex", alignItems: "center", gap: 12,
         padding: "10px 16px",
@@ -257,12 +259,14 @@ function RadarView() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function DayCard({
-  label, rows, dayKey, todayKey, currentHour,
+  label, rows, dayKey, todayKey, tomorrowKey, currentHour, isEvening,
 }: {
   label: string; rows: HourlyForecast[]
-  dayKey: string; todayKey: string; currentHour: number
+  dayKey: string; todayKey: string; tomorrowKey: string
+  currentHour: number; isEvening: boolean
 }) {
-  const isToday = dayKey === todayKey
+  const isToday    = dayKey === todayKey
+  const isTomorrow = dayKey === tomorrowKey
   return (
     <div style={{
       background: "var(--card)",
@@ -301,6 +305,7 @@ function DayCard({
             f={f}
             isPast={isToday && h < currentHour}
             isNow={isToday && h === currentHour}
+            isScrollTarget={isEvening && isTomorrow && h === 7}
           />
         )
       })}
@@ -353,21 +358,23 @@ export default function WindForecast() {
     return () => clearInterval(id)
   }, [fetchData])
 
-  // Scroll to current hour once data is ready
+  const { todayKey, tomorrowKey, currentHour, isEvening } = getMartiniqueState()
+
+  // After 20:00 MQ, scroll to next day 07:00 instead of current hour
+  const scrollTargetId = isEvening ? "forecast-next-7" : "forecast-current"
+
   useEffect(() => {
     if (!loading && data) {
       setTimeout(() => {
-        document.getElementById("forecast-current")
+        document.getElementById(scrollTargetId)
           ?.scrollIntoView({ behavior: "smooth", block: "center" })
       }, 200)
     }
   }, [loading]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const scrollToNow = () =>
-    document.getElementById("forecast-current")
+    document.getElementById(scrollTargetId)
       ?.scrollIntoView({ behavior: "smooth", block: "center" })
-
-  const { todayKey, currentHour } = getMartiniqueState()
 
   const activeSource =
     source === "yr" ? data?.yr : data?.openMeteo?.[model]
@@ -452,7 +459,9 @@ export default function WindForecast() {
                 key={key}
                 dayKey={key}
                 todayKey={todayKey}
+                tomorrowKey={tomorrowKey}
                 currentHour={currentHour}
+                isEvening={isEvening}
                 label={new Date(key + "T12:00:00").toLocaleDateString("fr-FR", {
                   weekday: "long", day: "numeric", month: "long",
                 })}
