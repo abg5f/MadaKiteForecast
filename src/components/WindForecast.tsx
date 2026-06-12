@@ -108,13 +108,15 @@ function WeatherBand({ rows }: { rows: HourlyForecast[] }) {
   const worstCode  = Math.max(...withData.map(r => r.weatherCode!))
   const { icon, label } = wmoSummary(worstCode)
 
-  const withCloud  = withData.filter(r => r.cloudCover !== undefined)
-  const withPrecip = withData.filter(r => r.precipProb !== undefined)
-  const withCape   = withData.filter(r => r.cape !== undefined)
+  const withCloud    = withData.filter(r => r.cloudCover !== undefined)
+  const withPrecip   = withData.filter(r => r.precipProb !== undefined)
+  const withPrecipMm = withData.filter(r => r.precip     !== undefined)
+  const withCape     = withData.filter(r => r.cape       !== undefined)
 
-  const avgCloud   = withCloud.length  ? Math.round(withCloud.reduce((s, r)  => s + r.cloudCover!,  0) / withCloud.length)  : null
-  const maxPrecip  = withPrecip.length ? Math.max(...withPrecip.map(r => r.precipProb!))  : null
-  const maxCape    = withCape.length   ? Math.max(...withCape.map(r => r.cape!))           : null
+  const avgCloud  = withCloud.length    ? Math.round(withCloud.reduce((s, r) => s + r.cloudCover!, 0) / withCloud.length) : null
+  const maxPrecip = withPrecip.length   ? Math.max(...withPrecip.map(r => r.precipProb!))   : null
+  const maxPrecipMm = withPrecipMm.length ? Math.max(...withPrecipMm.map(r => r.precip!))   : null
+  const maxCape   = withCape.length     ? Math.max(...withCape.map(r => r.cape!))            : null
 
   const capeAlert = maxCape !== null && maxCape >= 1000
     ? { label: "Orage", color: "var(--danger)", bg: "var(--danger-soft)" }
@@ -140,7 +142,7 @@ function WeatherBand({ rows }: { rows: HourlyForecast[] }) {
         </span>
       )}
 
-      {maxPrecip !== null && (
+      {maxPrecip !== null ? (
         <span style={{
           fontSize: 12,
           color: maxPrecip >= 40 ? "#2866ce" : "var(--muted-text)",
@@ -148,7 +150,15 @@ function WeatherBand({ rows }: { rows: HourlyForecast[] }) {
         }}>
           💧 {maxPrecip}%
         </span>
-      )}
+      ) : maxPrecipMm !== null ? (
+        <span style={{
+          fontSize: 12,
+          color: maxPrecipMm >= 1 ? "#2866ce" : "var(--muted-text)",
+          fontWeight: maxPrecipMm >= 1 ? 600 : 400,
+        }}>
+          💧 {maxPrecipMm > 0 ? `${maxPrecipMm.toFixed(1)}mm` : "0mm"}
+        </span>
+      ) : null}
 
       {capeAlert && (
         <span style={{
