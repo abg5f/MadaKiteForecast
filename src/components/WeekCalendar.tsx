@@ -16,6 +16,9 @@ interface DayStats {
   stars: number
   windowStart: string
   windowEnd: string
+  avgCloud: number | null
+  maxPrecip: number | null      // % probability
+  maxPrecipMm: number | null    // mm fallback
 }
 
 function peakThreshold(maxSpeed: number): number {
@@ -56,11 +59,18 @@ function computeDay(rows: HourlyForecast[]): DayStats | null {
   const fmt = (iso: string) =>
     new Date(iso).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit", timeZone: "UTC" })
 
+  const withCloud    = rows.filter(r => r.cloudCover !== undefined)
+  const withPrecip   = rows.filter(r => r.precipProb !== undefined)
+  const withPrecipMm = rows.filter(r => r.precip     !== undefined)
+
   return {
     maxSpeed,
     stars: starsFor(maxSpeed),
     windowStart: fmt(best[0].time),
     windowEnd: fmt(best[best.length - 1].time),
+    avgCloud:    withCloud.length    ? Math.round(withCloud.reduce((s, r) => s + r.cloudCover!, 0) / withCloud.length) : null,
+    maxPrecip:   withPrecip.length   ? Math.max(...withPrecip.map(r => r.precipProb!))   : null,
+    maxPrecipMm: withPrecipMm.length ? Math.max(...withPrecipMm.map(r => r.precip!))     : null,
   }
 }
 
@@ -94,6 +104,12 @@ function Stars({ count }: { count: number }) {
       ))}
     </div>
   )
+}
+
+function precipLabel(stats: DayStats): string | null {
+  if (stats.maxPrecip !== null) return `💧 ${stats.maxPrecip}%`
+  if (stats.maxPrecipMm !== null) return `💧 ${stats.maxPrecipMm > 0 ? `${stats.maxPrecipMm.toFixed(1)}mm` : "0mm"}`
+  return null
 }
 
 function DayRow({ dateKey, stats }: { dateKey: string; stats: DayStats | null }) {
@@ -168,6 +184,27 @@ function DayRow({ dateKey, stats }: { dateKey: string; stats: DayStats | null })
             <div style={{ fontSize: 11, color: "var(--muted-text)", marginTop: 2 }}>
               {stats.windowStart} – {stats.windowEnd}
             </div>
+            {(stats.avgCloud !== null || precipLabel(stats)) && (
+              <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginTop: 3 }}>
+                {stats.avgCloud !== null && (
+                  <span style={{ fontSize: 11, color: "var(--muted-text)" }}>☁ {stats.avgCloud}%</span>
+                )}
+                {precipLabel(stats) && (() => {
+                  const rain = stats.maxPrecip ?? 0
+                  const rainMm = stats.maxPrecipMm ?? 0
+                  const isWet = stats.maxPrecip !== null ? rain >= 40 : rainMm >= 1
+                  return (
+                    <span style={{
+                      fontSize: 11,
+                      color: isWet ? "#2866ce" : "var(--muted-text)",
+                      fontWeight: isWet ? 600 : 400,
+                    }}>
+                      {precipLabel(stats)}
+                    </span>
+                  )
+                })()}
+              </div>
+            )}
           </>
         ) : (
           <span style={{ fontSize: 12, color: "var(--faint)", fontStyle: "italic" }}>
