@@ -18,12 +18,24 @@ interface DayStats {
   windowEnd: string
 }
 
+function peakThreshold(maxSpeed: number): number {
+  if (maxSpeed >= 14) return 14  // only show ★★★ hours on good days
+  if (maxSpeed >= 12) return 12  // only show ★★+ hours on decent days
+  return 10
+}
+
 function computeDay(rows: HourlyForecast[]): DayStats | null {
-  // Find the best consecutive block where speed >= 10 kts
+  const good = rows.filter(r => r.windSpeed >= 10)
+  if (!good.length) return null
+
+  const maxSpeed = Math.max(...good.map(r => r.windSpeed))
+
+  // Find the best consecutive block at the day's peak threshold
+  const threshold = peakThreshold(maxSpeed)
   const blocks: HourlyForecast[][] = []
   let cur: HourlyForecast[] = []
   for (const r of rows) {
-    if (r.windSpeed >= 10) {
+    if (r.windSpeed >= threshold) {
       cur.push(r)
     } else {
       if (cur.length) { blocks.push(cur); cur = [] }
@@ -32,13 +44,17 @@ function computeDay(rows: HourlyForecast[]): DayStats | null {
   if (cur.length) blocks.push(cur)
   if (!blocks.length) return null
 
-  const best = blocks.reduce((a, b) =>
-    Math.max(...b.map(r => r.windSpeed)) > Math.max(...a.map(r => r.windSpeed)) ? b : a
-  )
+  // Pick the block with the highest peak (longest if tied)
+  const best = blocks.reduce((a, b) => {
+    const maxA = Math.max(...a.map(r => r.windSpeed))
+    const maxB = Math.max(...b.map(r => r.windSpeed))
+    if (maxB !== maxA) return maxB > maxA ? b : a
+    return b.length > a.length ? b : a
+  })
 
-  const maxSpeed = Math.max(...best.map(r => r.windSpeed))
+  // Times are stored as Martinique local encoded as UTC — use timeZone UTC to display correctly
   const fmt = (iso: string) =>
-    new Date(iso).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
+    new Date(iso).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit", timeZone: "UTC" })
 
   return {
     maxSpeed,
@@ -237,7 +253,7 @@ export default function WeekCalendar({ forecasts, sourceLabel }: Props) {
 
       {/* Note étoiles */}
       <p style={{ fontSize: 11, color: "var(--faint)", textAlign: "center", marginTop: 10 }}>
-        Basé sur le pic horaire · Aucune étoile sous 10 kts
+        Créneau de pointe · Aucune étoile sous 10 kts
       </p>
     </div>
   )
