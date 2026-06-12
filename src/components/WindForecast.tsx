@@ -33,22 +33,22 @@ const dirLabel = (deg: number) => DIR[Math.round(deg / 45) % 8]
 
 // ── View toggle ───────────────────────────────────────────────────────────────
 
-type AppView = "forecast" | "calendar"
+type AppView = "forecast" | "calendar" | "radar"
 
 function ViewToggle({ view, onChange }: { view: AppView; onChange: (v: AppView) => void }) {
   const refs = useRef<(HTMLButtonElement | null)[]>([])
   const [g, setG] = useState({ left: 0, width: 0 })
-  const idx = view === "forecast" ? 0 : 1
+  const opts: { value: AppView; label: string }[] = [
+    { value: "forecast",  label: "Prévisions" },
+    { value: "calendar",  label: "Calendrier" },
+    { value: "radar",     label: "Radar" },
+  ]
+  const idx = opts.findIndex(o => o.value === view)
 
   useLayoutEffect(() => {
     const el = refs.current[idx]
     if (el) setG({ left: el.offsetLeft, width: el.offsetWidth })
   }, [idx])
-
-  const opts: { value: AppView; label: string }[] = [
-    { value: "forecast", label: "Prévisions" },
-    { value: "calendar", label: "Calendrier" },
-  ]
 
   return (
     <div style={{
@@ -174,6 +174,86 @@ function ForecastRow({
     </div>
   )
 }
+
+// ── Radar view (Windy embed) ──────────────────────────────────────────────────
+
+const RADAR_LAYERS = [
+  { id: "radar",     label: "🌧 Pluie",     title: "Radar précipitations" },
+  { id: "wind",      label: "💨 Vent",      title: "Animation vent" },
+  { id: "satellite", label: "🛰 Satellite", title: "Satellite IR" },
+  { id: "swell",     label: "🌊 Houle",     title: "Hauteur des vagues" },
+]
+
+function RadarView() {
+  const [layer, setLayer] = useState("radar")
+
+  const src =
+    `https://embed.windy.com/embed2.html` +
+    `?lat=14.55&lon=-60.83&zoom=9` +
+    `&level=surface&overlay=${layer}` +
+    `&menu=&message=true&marker=true` +
+    `&calendar=12&pressure=&type=map` +
+    `&location=coordinates&detail=` +
+    `&metricWind=kt&metricTemp=%C2%B0C&radarRange=-1`
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+
+      {/* Sélecteur de couche */}
+      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+        {RADAR_LAYERS.map(l => (
+          <button
+            key={l.id}
+            onClick={() => setLayer(l.id)}
+            style={{
+              padding: "7px 14px", borderRadius: "var(--r-pill)",
+              border: `1.5px solid ${layer === l.id ? "var(--brand)" : "var(--border)"}`,
+              background: layer === l.id ? "var(--brand)" : "var(--card)",
+              color: layer === l.id ? "#fff" : "var(--text-2)",
+              fontSize: 13, fontWeight: layer === l.id ? 600 : 400,
+              cursor: "pointer", transition: "all .15s",
+            }}
+          >
+            {l.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Carte Windy */}
+      <div style={{
+        borderRadius: "var(--r-card)", overflow: "hidden",
+        border: "1px solid var(--border)", boxShadow: "var(--shadow-card)",
+      }}>
+        <div style={{
+          padding: "8px 14px",
+          background: "var(--surface)", borderBottom: "1px solid var(--border)",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+        }}>
+          <span style={{ fontSize: 12, fontWeight: 600, color: "var(--text-2)" }}>
+            {RADAR_LAYERS.find(l => l.id === layer)?.title} · Martinique
+          </span>
+          <span style={{ fontSize: 11, color: "var(--muted-text)" }}>Windy.com</span>
+        </div>
+        <iframe
+          key={layer}
+          src={src}
+          width="100%"
+          height="420"
+          frameBorder="0"
+          allow="fullscreen"
+          title="Radar météo Martinique — Windy"
+          style={{ display: "block" }}
+        />
+      </div>
+
+      <p style={{ fontSize: 11, color: "var(--muted-text)", textAlign: "center" }}>
+        Carte interactive · Pincer pour zoomer · Lecture animée disponible
+      </p>
+    </div>
+  )
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 function DayCard({
   label, rows, dayKey, todayKey, currentHour,
@@ -302,7 +382,7 @@ export default function WindForecast() {
       {/* Toggle vue + bouton Maintenant */}
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
         <ViewToggle view={view} onChange={setView} />
-        {view === "forecast" && (
+        {view === "forecast" && !loading && (
           <button
             onClick={scrollToNow}
             style={{
@@ -317,8 +397,11 @@ export default function WindForecast() {
         )}
       </div>
 
-      {/* Filtres */}
-      <div>
+      {/* Vue Radar — indépendante des filtres */}
+      {view === "radar" && <RadarView />}
+
+      {/* Filtres — masqués en vue radar */}
+      {view !== "radar" && <div>
         <FilterToggle
           source={source} model={model}
           onSourceChange={setSource} onModelChange={setModel}
@@ -334,12 +417,12 @@ export default function WindForecast() {
             </span>
           )}
         </div>
-      </div>
+      </div>}
 
-      {/* Contenu */}
-      {loading && <SkeletonRows />}
+      {/* Contenu prévisions/calendrier */}
+      {view !== "radar" && loading && <SkeletonRows />}
 
-      {!loading && error && (
+      {view !== "radar" && !loading && error && (
         <div style={{
           padding: "32px 20px", textAlign: "center",
           background: "var(--card)", borderRadius: "var(--r-card)", border: "1px solid var(--border)",
@@ -350,7 +433,7 @@ export default function WindForecast() {
         </div>
       )}
 
-      {!loading && !error && view === "forecast" && (
+      {view !== "radar" && !loading && !error && view === "forecast" && (
         dayGroups.length === 0 ? (
           <div style={{
             padding: "40px 20px", textAlign: "center",
@@ -377,7 +460,7 @@ export default function WindForecast() {
         )
       )}
 
-      {!loading && !error && view === "calendar" && (
+      {view !== "radar" && !loading && !error && view === "calendar" && (
         <WeekCalendar forecasts={forecasts} sourceLabel={srcLabel} />
       )}
 
