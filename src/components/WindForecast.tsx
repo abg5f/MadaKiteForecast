@@ -389,22 +389,9 @@ export default function WindForecast() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
 
-      {/* Toggle vue + bouton Maintenant */}
-      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      {/* Toggle vue */}
+      <div>
         <ViewToggle view={view} onChange={setView} />
-        {view === "forecast" && !loading && (
-          <button
-            onClick={scrollToNow}
-            style={{
-              height: 42, padding: "0 14px", borderRadius: "var(--r-pill)",
-              border: "1.5px solid var(--border)", background: "var(--card)",
-              color: "var(--brand)", fontWeight: 600, fontSize: 13,
-              cursor: "pointer", flexShrink: 0, whiteSpace: "nowrap",
-            }}
-          >
-            ⏱ Maintenant
-          </button>
-        )}
       </div>
 
       {/* Vue Radar — indépendante des filtres */}
@@ -417,15 +404,30 @@ export default function WindForecast() {
           onSourceChange={setSource} onModelChange={setModel}
           data={data}
         />
-        <div style={{ display: "flex", justifyContent: "space-between", marginTop: 8 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 8 }}>
           <span style={{ fontSize: 11, color: "var(--muted-text)", fontWeight: 500 }}>{srcLabel}</span>
-          {data?.fetchedAt && (
-            <span style={{ fontSize: 11, color: "var(--muted-text)" }}>
-              Mis à jour {new Date(data.fetchedAt).toLocaleTimeString("fr-FR", {
-                hour: "2-digit", minute: "2-digit",
-              })}
-            </span>
-          )}
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            {view === "forecast" && (
+              <button
+                onClick={scrollToNow}
+                style={{
+                  height: 28, padding: "0 10px", borderRadius: "var(--r-pill)",
+                  border: "1.5px solid var(--border)", background: "var(--card)",
+                  color: "var(--brand)", fontWeight: 600, fontSize: 11,
+                  cursor: "pointer", flexShrink: 0, whiteSpace: "nowrap",
+                }}
+              >
+                ⏱ Maintenant
+              </button>
+            )}
+            {data?.fetchedAt && (
+              <span style={{ fontSize: 11, color: "var(--muted-text)" }}>
+                Mis à jour {new Date(data.fetchedAt).toLocaleTimeString("fr-FR", {
+                  hour: "2-digit", minute: "2-digit",
+                })}
+              </span>
+            )}
+          </div>
         </div>
       </div>}
 
