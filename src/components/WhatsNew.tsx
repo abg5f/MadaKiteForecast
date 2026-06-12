@@ -2,13 +2,13 @@
 
 import React, { useEffect, useState } from "react"
 
-const VERSION_KEY = "mada-kite-v6"
+const VERSION_KEY = "mada-kite-v7"
 
 const FEATURES: { emoji: string; text: React.ReactNode }[] = [
-  { emoji: "⚡", text: <>Actualisation accélérée : les prévisions sont maintenant rafraîchies toutes les <strong>15 minutes</strong> (au lieu de 30 minutes)</> },
+  { emoji: "🌤", text: <>Bandeau météo par journée : condition dominante, couverture nuageuse, probabilité de pluie et alerte instabilité (⚡)</> },
+  { emoji: "⚡", text: <>Actualisation accélérée : les prévisions sont rafraîchies toutes les <strong>15 minutes</strong></> },
   { emoji: "🌊", text: "Vue Radar météo en temps réel (Windy) — pluie, vent, satellite, houle" },
   { emoji: "📍", text: <><strong>3 spots</strong> : Pointe Faula, Cap Est et Cap Chevalier — prévisions dédiées pour chaque spot</> },
-  { emoji: "📡", text: "Balise live : Airfly à Pointe Faula" },
   { emoji: "📱", text: "L'app est téléchargeable sur iPhone et Android — tuto dans le menu ☰ en haut à droite" },
 ]
 
