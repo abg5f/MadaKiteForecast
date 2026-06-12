@@ -199,7 +199,7 @@ export default function Header() {
             {spot.stationType === null && (
               <div style={{ padding: "14px 12px", textAlign: "center" }}>
                 <p style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", margin: 0 }}>
-                  Aucune balise disponible pour ce spot
+                  Pas de balise live pour ce spot
                 </p>
               </div>
             )}
