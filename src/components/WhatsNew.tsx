@@ -1,14 +1,13 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 
 const VERSION_KEY = "mada-kite-v5"
 
-const FEATURES = [
+const FEATURES: { emoji: string; text: React.ReactNode }[] = [
   { emoji: "🌊", text: "Vue Radar météo en temps réel (Windy) — pluie, vent, satellite, houle" },
-  { emoji: "📍", text: "3 spots : Pointe Faula, Cap Est et Cap Chevalier — prévisions dédiées pour chaque spot" },
-  { emoji: "📡", text: "Balises live : Airfly à Pointe Faula, Tempest WX à Cap Est" },
-  { emoji: "⏱", text: "Scroll automatique sur l'heure courante (ou lendemain 07:00 après 20h)" },
+  { emoji: "📍", text: <><strong>3 spots</strong> : Pointe Faula, Cap Est et Cap Chevalier — prévisions dédiées pour chaque spot</> },
+  { emoji: "📡", text: "Balise live : Airfly à Pointe Faula" },
   { emoji: "📱", text: "L'app est téléchargeable sur iPhone et Android — tuto dans le menu ☰ en haut à droite" },
 ]
 
