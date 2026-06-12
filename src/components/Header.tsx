@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react"
 import AppMenu from "./AppMenu"
+import CapEstStation from "./CapEstStation"
 
 // ── SVG ───────────────────────────────────────────────────────────────────────
 
@@ -37,7 +38,7 @@ type Spot = {
   id: string
   name: string
   stationLabel: string
-  stationSrc: string
+  stationSrc: string | null
   stationHeight: number
 }
 
@@ -46,16 +47,15 @@ const SPOTS: Spot[] = [
     id: "faula",
     name: "Pointe Faula",
     stationLabel: "Balise Live · Airfly",
-    stationSrc:
-      "https://www.windguru.cz/wgs-iframe.php?s=4164&wj=knots&tj=c&tmprh=1&avg_min=0&date_format=Y-m-d%20H%3Ai%3As%20T",
+    stationSrc: "https://www.windguru.cz/wgs-iframe.php?s=4164&wj=knots&tj=c&tmprh=1&avg_min=0&date_format=Y-m-d%20H%3Ai%3As%20T",
     stationHeight: 68,
   },
   {
     id: "capest",
     name: "Cap Est",
     stationLabel: "Balise Live · Tempest WX",
-    stationSrc: "https://tempestwx.com/station/122730/",
-    stationHeight: 240,
+    stationSrc: null,
+    stationHeight: 0,
   },
 ]
 
@@ -208,16 +208,20 @@ export default function Header() {
                 </span>
               </div>
             </div>
-            <iframe
-              key={spot.id}
-              src={spot.stationSrc}
-              width="100%"
-              height={spot.stationHeight}
-              frameBorder="0"
-              scrolling="no"
-              title={`Station vent ${spot.name} — en direct`}
-              style={{ display: "block" }}
-            />
+            {spot.stationSrc ? (
+              <iframe
+                key={spot.id}
+                src={spot.stationSrc}
+                width="100%"
+                height={spot.stationHeight}
+                frameBorder="0"
+                scrolling="no"
+                title={`Station vent ${spot.name} — en direct`}
+                style={{ display: "block" }}
+              />
+            ) : (
+              <CapEstStation />
+            )}
           </div>
         </div>
 
