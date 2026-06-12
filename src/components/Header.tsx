@@ -183,19 +183,25 @@ export default function Header() {
                 </span>
               </div>
             </div>
-            {spot.stationSrc ? (
+            {spot.stationType === "windguru" && spot.stationSrc && (
               <iframe
                 key={spot.id}
                 src={spot.stationSrc}
                 width="100%"
-                height={spot.stationHeight}
+                height={spot.stationHeight ?? 68}
                 frameBorder="0"
                 scrolling="no"
                 title={`Station vent ${spot.name} — en direct`}
                 style={{ display: "block" }}
               />
-            ) : (
-              <CapEstStation />
+            )}
+            {spot.stationType === "weatherflow" && <CapEstStation />}
+            {spot.stationType === null && (
+              <div style={{ padding: "14px 12px", textAlign: "center" }}>
+                <p style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", margin: 0 }}>
+                  Aucune balise disponible pour ce spot
+                </p>
+              </div>
             )}
           </div>
         </div>

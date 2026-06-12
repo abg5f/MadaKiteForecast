@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react"
 
-const VERSION_KEY = "mada-kite-v4"
+const VERSION_KEY = "mada-kite-v5"
 
 const FEATURES = [
   { emoji: "🌊", text: "Vue Radar météo en temps réel (Windy) — pluie, vent, satellite, houle" },
-  { emoji: "📍", text: "Multi-spots : Pointe Faula & Cap Est avec balise live dédiée" },
-  { emoji: "⏱", text: "Scroll automatique sur l'heure courante en Martinique" },
-  { emoji: "📱", text: "L'app est téléchargeable sur iPhone et Android — tuto d'installation disponible dans le menu ☰ en haut à droite" },
+  { emoji: "📍", text: "3 spots : Pointe Faula, Cap Est et Cap Chevalier — prévisions dédiées pour chaque spot" },
+  { emoji: "📡", text: "Balises live : Airfly à Pointe Faula, Tempest WX à Cap Est" },
+  { emoji: "⏱", text: "Scroll automatique sur l'heure courante (ou lendemain 07:00 après 20h)" },
+  { emoji: "📱", text: "L'app est téléchargeable sur iPhone et Android — tuto dans le menu ☰ en haut à droite" },
 ]
 
 export default function WhatsNew() {
