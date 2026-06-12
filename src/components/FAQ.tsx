@@ -35,16 +35,15 @@ const ITEMS: Item[] = [
     title: "Quelles sources de données ?",
     body: () => (
       <div>
-        {T.p("L'app agrège 5 modèles météo indépendants en parallèle :")}
+        {T.p("L'app agrège 4 modèles météo indépendants en parallèle via Open-Meteo :")}
         {T.ul([
           "<strong>GFS</strong> (NOAA, USA) — modèle global, 7 jours, très fiable pour les Caraïbes",
           "<strong>ICON</strong> (DWD, Allemagne) — excellent en zone tropicale, résolution fine",
           "<strong>ERA5</strong> (ECMWF) — réanalyse historique, données passées uniquement",
           "<strong>AROME</strong> (Météo-France) — modèle régional dédié Antilles-Caraïbes",
-          "<strong>Yr.no</strong> (Met Norway) — service météo national norvégien, couverture mondiale",
         ])}
         {T.p("La balise live est une station anémométrique physique à la Pointe Faula (station Windguru #4164, gérée par Airfly972), qui mesure la vitesse et la direction du vent en temps réel.")}
-        {T.p("Open-Meteo et Yr.no sont entièrement gratuits, sans clé API. Seule la balise nécessite l'intégration iframe Windguru.")}
+        {T.p("Open-Meteo est entièrement gratuit, sans clé API. Seule la balise nécessite l'intégration iframe Windguru.")}
       </div>
     ),
   },
@@ -111,7 +110,6 @@ const ITEMS: Item[] = [
           "<strong>React 19</strong> + <strong>TypeScript</strong> — UI réactive et typée",
           "<strong>Tailwind CSS v4</strong> — utilitaires CSS, design tokens personnalisés",
           "<strong>Open-Meteo API</strong> — gratuite, sans clé API, modèles GFS/ICON/ERA5/AROME",
-          "<strong>Yr.no API</strong> (Met Norway) — gratuite, sans clé API",
           "<strong>Vercel</strong> — déploiement, edge functions, CDN global",
         ])}
         {T.p("Le code source est disponible sur GitHub : github.com/abg5f/MadaKiteForecast")}

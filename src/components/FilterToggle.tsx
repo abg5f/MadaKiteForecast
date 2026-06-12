@@ -3,13 +3,6 @@
 import { useLayoutEffect, useRef, useState } from "react"
 import type { ModelType, AggregatedForecast } from "@/lib/api-clients"
 
-export type SourceFilter = "openmeteo" | "yr"
-
-const SOURCES: { value: SourceFilter; label: string }[] = [
-  { value: "openmeteo", label: "Open-Meteo" },
-  { value: "yr",        label: "Yr.no" },
-]
-
 const MODELS: { value: ModelType; label: string }[] = [
   { value: "AROME", label: "AROME" },
   { value: "GFS",   label: "GFS" },
@@ -21,10 +14,9 @@ interface GliderTabsProps<T extends string> {
   options: { value: T; label: string; disabled?: boolean; title?: string }[]
   value: T
   onChange: (v: T) => void
-  small?: boolean
 }
 
-function GliderTabs<T extends string>({ options, value, onChange, small }: GliderTabsProps<T>) {
+function GliderTabs<T extends string>({ options, value, onChange }: GliderTabsProps<T>) {
   const refs = useRef<(HTMLButtonElement | null)[]>([])
   const [glider, setGlider] = useState({ left: 0, width: 0 })
   const activeIdx = options.findIndex((o) => o.value === value)
@@ -35,33 +27,18 @@ function GliderTabs<T extends string>({ options, value, onChange, small }: Glide
   }, [activeIdx, options.length])
 
   return (
-    <div
-      style={{
-        position: "relative",
-        display: "flex",
-        background: "var(--surface)",
-        borderRadius: "var(--r-pill)",
-        padding: 3,
-        gap: 0,
-      }}
-    >
-      {/* Glider */}
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          top: 3,
-          left: glider.left,
-          width: glider.width,
-          height: small ? 28 : 34,
-          borderRadius: "var(--r-pill)",
-          background: "var(--brand)",
-          boxShadow: "0 1px 3px rgba(0,0,0,0.15)",
-          transition: "left 0.22s cubic-bezier(0.4,0,0.2,1), width 0.22s cubic-bezier(0.4,0,0.2,1)",
-          pointerEvents: "none",
-        }}
-      />
-
+    <div style={{
+      position: "relative", display: "flex",
+      background: "var(--surface)", borderRadius: "var(--r-pill)", padding: 3,
+    }}>
+      <div aria-hidden style={{
+        position: "absolute", top: 3,
+        left: glider.left, width: glider.width, height: 34,
+        borderRadius: "var(--r-pill)", background: "var(--brand)",
+        boxShadow: "0 1px 3px rgba(0,0,0,0.15)",
+        transition: "left 0.22s cubic-bezier(0.4,0,0.2,1), width 0.22s cubic-bezier(0.4,0,0.2,1)",
+        pointerEvents: "none",
+      }} />
       {options.map((opt, i) => (
         <button
           key={opt.value}
@@ -70,24 +47,13 @@ function GliderTabs<T extends string>({ options, value, onChange, small }: Glide
           disabled={opt.disabled}
           title={opt.title}
           style={{
-            flex: 1,
-            height: small ? 28 : 34,
-            borderRadius: "var(--r-pill)",
-            border: "none",
-            background: "transparent",
-            color: opt.disabled
-              ? "var(--faint)"
-              : opt.value === value
-              ? "#fff"
-              : "var(--muted-text)",
+            flex: 1, height: 34, borderRadius: "var(--r-pill)",
+            border: "none", background: "transparent",
+            color: opt.disabled ? "var(--faint)" : opt.value === value ? "#fff" : "var(--muted-text)",
             fontWeight: opt.value === value ? 600 : 400,
-            fontSize: small ? 12 : 13,
-            cursor: opt.disabled ? "default" : "pointer",
-            position: "relative",
-            zIndex: 1,
-            transition: "color 0.18s",
-            whiteSpace: "nowrap",
-            padding: "0 8px",
+            fontSize: 13, cursor: opt.disabled ? "default" : "pointer",
+            position: "relative", zIndex: 1,
+            transition: "color 0.18s", whiteSpace: "nowrap", padding: "0 8px",
           }}
         >
           {opt.label}
@@ -98,38 +64,18 @@ function GliderTabs<T extends string>({ options, value, onChange, small }: Glide
 }
 
 interface Props {
-  source: SourceFilter
   model: ModelType
-  onSourceChange: (s: SourceFilter) => void
   onModelChange: (m: ModelType) => void
   data: AggregatedForecast | null
 }
 
-export default function FilterToggle({ source, model, onSourceChange, onModelChange, data }: Props) {
+export default function FilterToggle({ model, onModelChange, data }: Props) {
   const errors = data?.errors ?? {}
-
-  const sourceOptions = SOURCES.map((s) => {
-    const disabled = s.value === "yr" ? !data?.yr : false
-    const errMsg = s.value === "yr" ? errors["Yr.no"] : undefined
-    return {
-      ...s,
-      disabled,
-      title: disabled && errMsg ? errMsg : undefined,
-    }
-  })
-
   const modelOptions = MODELS.map((m) => ({
     ...m,
     disabled: data?.openMeteo?.[m.value] == null,
     title: errors[m.value] ?? undefined,
   }))
 
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-      <GliderTabs options={sourceOptions} value={source} onChange={onSourceChange} />
-      {source === "openmeteo" && (
-        <GliderTabs options={modelOptions} value={model} onChange={onModelChange} small />
-      )}
-    </div>
-  )
+  return <GliderTabs options={modelOptions} value={model} onChange={onModelChange} />
 }

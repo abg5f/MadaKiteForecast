@@ -21,7 +21,7 @@ export default function Home() {
 
       <footer style={{ borderTop: "1px solid var(--border)", padding: "14px 16px", textAlign: "center", background: "var(--bg)" }}>
         <p style={{ fontSize: 11, color: "var(--muted-text)" }}>
-          Open-Meteo · Yr.no · Station Windguru #4164 · Tempest WX #122730
+          Open-Meteo · Station Windguru #4164 · Tempest WX #122730
         </p>
         <p style={{ fontSize: 11, color: "var(--muted-text)", marginTop: 3 }}>
           Fait par{" "}

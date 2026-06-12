@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server"
 import {
   fetchOpenMeteo,
-  fetchYr,
   computeAverage,
   type ModelType,
   type AggregatedForecast,
@@ -16,12 +15,11 @@ export async function GET(request: Request) {
   const lat = parseFloat(searchParams.get("lat") ?? "14.55")
   const lng = parseFloat(searchParams.get("lng") ?? "-60.83")
 
-  const [gfsR, iconR, era5R, aromeR, yrR] = await Promise.allSettled([
+  const [gfsR, iconR, era5R, aromeR] = await Promise.allSettled([
     fetchOpenMeteo("GFS",   lat, lng),
     fetchOpenMeteo("ICON",  lat, lng),
     fetchOpenMeteo("ERA5",  lat, lng),
     fetchOpenMeteo("AROME", lat, lng),
-    fetchYr(lat, lng),
   ])
 
   const results = [gfsR, iconR, era5R, aromeR]
@@ -32,9 +30,7 @@ export async function GET(request: Request) {
     ])
   ) as AggregatedForecast["openMeteo"]
 
-  const yr = yrR.status === "fulfilled" ? yrR.value : null
-
-  const allSources = [...Object.values(openMeteo).filter(Boolean), yr]
+  const allSources = Object.values(openMeteo).filter(Boolean)
 
   if (allSources.length === 0) {
     return NextResponse.json({ error: "All sources unavailable" }, { status: 503 })
@@ -47,11 +43,10 @@ export async function GET(request: Request) {
   if (iconR.status  === "rejected") errors["ICON"]  = (iconR.reason  as Error).message
   if (era5R.status  === "rejected") errors["ERA5"]  = (era5R.reason  as Error).message
   if (aromeR.status === "rejected") errors["AROME"] = (aromeR.reason as Error).message
-  if (yrR.status    === "rejected") errors["Yr.no"] = (yrR.reason    as Error).message
 
   const payload: AggregatedForecast = {
     openMeteo,
-    yr,
+    yr: null,
     average,
     fetchedAt: new Date().toISOString(),
     ...(Object.keys(errors).length > 0 && { errors }),

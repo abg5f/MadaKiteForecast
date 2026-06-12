@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState, useCallback, useLayoutEffect, useRef } from "react"
-import FilterToggle, { type SourceFilter } from "./FilterToggle"
+import FilterToggle from "./FilterToggle"
 import WeekCalendar from "./WeekCalendar"
 import type { AggregatedForecast, HourlyForecast, ModelType } from "@/lib/api-clients"
 import { useSpot } from "./SpotProvider"
@@ -422,9 +422,8 @@ export default function WindForecast() {
   const [data, setData]       = useState<AggregatedForecast | null>(null)
   const [error, setError]     = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
-  const [view, setView]       = useState<AppView>("forecast")
-  const [source, setSource]   = useState<SourceFilter>("openmeteo")
-  const [model, setModel]     = useState<ModelType>("AROME")
+  const [view, setView]   = useState<AppView>("forecast")
+  const [model, setModel] = useState<ModelType>("AROME")
 
   const fetchData = useCallback(async () => {
     setLoading(true)
@@ -464,14 +463,12 @@ export default function WindForecast() {
     document.getElementById(scrollTargetId)
       ?.scrollIntoView({ behavior: "smooth", block: "center" })
 
-  const activeSource =
-    source === "yr" ? data?.yr : data?.openMeteo?.[model]
+  const activeSource = data?.openMeteo?.[model]
 
   const forecasts = (activeSource?.forecasts ?? []).filter(f => {
     const h = new Date(f.time).getUTCHours()
     return h >= 7 && h <= 19
   })
-  const srcLabel  = activeSource?.label ?? ""
   const dayGroups = groupByDay(forecasts)
 
   return (
@@ -487,13 +484,9 @@ export default function WindForecast() {
 
       {/* Filtres — masqués en vue radar */}
       {view !== "radar" && <div>
-        <FilterToggle
-          source={source} model={model}
-          onSourceChange={setSource} onModelChange={setModel}
-          data={data}
-        />
+        <FilterToggle model={model} onModelChange={setModel} data={data} />
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 8 }}>
-          <span style={{ fontSize: 11, color: "var(--muted-text)", fontWeight: 500 }}>{srcLabel}</span>
+          <span style={{ fontSize: 11, color: "var(--muted-text)", fontWeight: 500 }}>Source : Open-Meteo</span>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             {view === "forecast" && (
               <button
@@ -563,7 +556,7 @@ export default function WindForecast() {
       )}
 
       {view !== "radar" && !loading && !error && view === "calendar" && (
-        <WeekCalendar forecasts={forecasts} sourceLabel={srcLabel} />
+        <WeekCalendar forecasts={forecasts} sourceLabel={activeSource?.label ?? ""} />
       )}
 
       {data?.errors && Object.keys(data.errors).length > 0 && (
