@@ -91,7 +91,7 @@ const ITEMS: Item[] = [
         {h("Sur Android (Chrome)")}
         {ul([
           "Ouvre l'app dans <strong>Chrome</strong>",
-          "Menu <strong>⋮</strong> → <strong>« Installer l'application »</strong>",
+          "Menu <strong>⋮</strong> → <strong>« Ajouter à l'écran d'accueil »</strong>",
           "Confirme l'installation",
         ])}
       </>

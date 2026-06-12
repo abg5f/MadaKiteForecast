@@ -6,6 +6,10 @@ export interface HourlyForecast {
   windSpeed: number  // knots
   windGust: number   // knots
   windDir: number    // degrees 0-360
+  cloudCover?: number   // 0–100 %
+  precipProb?: number   // 0–100 % probability
+  weatherCode?: number  // WMO weather code
+  cape?: number         // J/kg convective instability
 }
 
 export interface SourceForecast {
@@ -45,7 +49,7 @@ export async function fetchOpenMeteo(
   const qs = new URLSearchParams({
     latitude: String(lat),
     longitude: String(lng),
-    hourly: "windspeed_10m,winddirection_10m,windgusts_10m",
+    hourly: "windspeed_10m,winddirection_10m,windgusts_10m,cloud_cover,precipitation_probability,weather_code,cape",
     windspeed_unit: "kn",
     timezone: "America/Martinique",
     forecast_days: "7",
@@ -65,17 +69,28 @@ export async function fetchOpenMeteo(
   const speeds: (number | null)[] = data.hourly?.windspeed_10m ?? []
   const dirs: (number | null)[]   = data.hourly?.winddirection_10m ?? []
   const gusts: (number | null)[]  = data.hourly?.windgusts_10m ?? []
+  const clouds: (number | null)[] = data.hourly?.cloud_cover ?? []
+  const precips: (number | null)[] = data.hourly?.precipitation_probability ?? []
+  const codes: (number | null)[]  = data.hourly?.weather_code ?? []
+  const capes: (number | null)[]  = data.hourly?.cape ?? []
 
-  const forecasts: HourlyForecast[] = times
-    .map((t, i) => ({
+  type RawRow = {
+    time: string; windSpeed: number | null; windGust: number | null; windDir: number | null
+    cloudCover?: number; precipProb?: number; weatherCode?: number; cape?: number
+  }
+
+  const forecasts: HourlyForecast[] = (times
+    .map((t, i): RawRow => ({
       time: new Date(t).toISOString(),
-      windSpeed: speeds[i] ?? null,
-      windGust:  gusts[i]  ?? speeds[i] ?? null,
-      windDir:   dirs[i]   ?? null,
+      windSpeed:   speeds[i]  ?? null,
+      windGust:    gusts[i]   ?? speeds[i] ?? null,
+      windDir:     dirs[i]    ?? null,
+      cloudCover:  clouds[i]  ?? undefined,
+      precipProb:  precips[i] ?? undefined,
+      weatherCode: codes[i]   ?? undefined,
+      cape:        capes[i]   ?? undefined,
     }))
-    .filter((f): f is HourlyForecast =>
-      f.windSpeed != null && f.windDir != null && f.windGust != null
-    )
+    .filter((f) => f.windSpeed != null && f.windDir != null && f.windGust != null) as HourlyForecast[])
     .map((f) => ({
       ...f,
       windSpeed: Math.round(f.windSpeed),
@@ -153,7 +168,18 @@ export function computeAverage(sources: (SourceForecast | null)[]): SourceForeca
     const cosSum    = matches.reduce((s, m) => s + Math.cos(toRad(m.windDir)), 0)
     const avgDir    = Math.round(((Math.atan2(sinSum / n, cosSum / n) * 180) / Math.PI + 360) % 360)
 
-    return { time: entry.time, windSpeed: avgSpeed, windGust: avgGust, windDir: avgDir }
+    const withCloud = matches.filter(m => m.cloudCover !== undefined)
+    const withPrecip = matches.filter(m => m.precipProb !== undefined)
+    const withCode  = matches.filter(m => m.weatherCode !== undefined)
+    const withCape  = matches.filter(m => m.cape !== undefined)
+
+    return {
+      time: entry.time, windSpeed: avgSpeed, windGust: avgGust, windDir: avgDir,
+      cloudCover:  withCloud.length  ? Math.round(withCloud.reduce((s, m)  => s + m.cloudCover!,  0) / withCloud.length)  : undefined,
+      precipProb:  withPrecip.length ? Math.round(withPrecip.reduce((s, m) => s + m.precipProb!,  0) / withPrecip.length) : undefined,
+      weatherCode: withCode.length   ? Math.max(...withCode.map(m => m.weatherCode!))  : undefined,
+      cape:        withCape.length   ? Math.max(...withCape.map(m => m.cape!))          : undefined,
+    }
   })
 
   return { source: "openmeteo", label: "Moyenne", updatedAt: new Date().toISOString(), forecasts }

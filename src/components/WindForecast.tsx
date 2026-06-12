@@ -88,6 +88,83 @@ function ViewToggle({ view, onChange }: { view: AppView; onChange: (v: AppView) 
   )
 }
 
+// ── WMO weather code helpers ──────────────────────────────────────────────────
+
+function wmoSummary(code: number): { icon: string; label: string } {
+  if (code === 0)  return { icon: "☀️", label: "Dégagé" }
+  if (code <= 1)   return { icon: "🌤", label: "Beau" }
+  if (code <= 3)   return { icon: "⛅", label: "Nuageux" }
+  if (code <= 48)  return { icon: "🌫", label: "Brouillard" }
+  if (code <= 55)  return { icon: "🌦", label: "Bruine" }
+  if (code <= 67)  return { icon: "🌧", label: "Pluie" }
+  if (code <= 82)  return { icon: "🌦", label: "Averses" }
+  return               { icon: "⛈",  label: "Orage" }
+}
+
+function WeatherBand({ rows }: { rows: HourlyForecast[] }) {
+  const withData = rows.filter(r => r.weatherCode !== undefined)
+  if (!withData.length) return null
+
+  const worstCode  = Math.max(...withData.map(r => r.weatherCode!))
+  const { icon, label } = wmoSummary(worstCode)
+
+  const withCloud  = withData.filter(r => r.cloudCover !== undefined)
+  const withPrecip = withData.filter(r => r.precipProb !== undefined)
+  const withCape   = withData.filter(r => r.cape !== undefined)
+
+  const avgCloud   = withCloud.length  ? Math.round(withCloud.reduce((s, r)  => s + r.cloudCover!,  0) / withCloud.length)  : null
+  const maxPrecip  = withPrecip.length ? Math.max(...withPrecip.map(r => r.precipProb!))  : null
+  const maxCape    = withCape.length   ? Math.max(...withCape.map(r => r.cape!))           : null
+
+  const capeAlert = maxCape !== null && maxCape >= 1000
+    ? { label: "Orage", color: "var(--danger)", bg: "var(--danger-soft)" }
+    : maxCape !== null && maxCape >= 500
+    ? { label: "Instable", color: "#c2410c", bg: "#ffedd5" }
+    : null
+
+  return (
+    <div style={{
+      display: "flex", alignItems: "center", flexWrap: "wrap", gap: "4px 14px",
+      padding: "5px 16px",
+      background: "var(--surface)",
+      borderBottom: "1px solid var(--border-soft)",
+    }}>
+      <span style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 12 }}>
+        <span style={{ fontSize: 14 }}>{icon}</span>
+        <span style={{ color: "var(--text-2)", fontWeight: 500 }}>{label}</span>
+      </span>
+
+      {avgCloud !== null && (
+        <span style={{ fontSize: 12, color: "var(--muted-text)" }}>
+          ☁ {avgCloud}%
+        </span>
+      )}
+
+      {maxPrecip !== null && (
+        <span style={{
+          fontSize: 12,
+          color: maxPrecip >= 40 ? "#2866ce" : "var(--muted-text)",
+          fontWeight: maxPrecip >= 40 ? 600 : 400,
+        }}>
+          💧 {maxPrecip}%
+        </span>
+      )}
+
+      {capeAlert && (
+        <span style={{
+          fontSize: 11, fontWeight: 700,
+          color: capeAlert.color,
+          padding: "2px 7px", borderRadius: "var(--r-pill)",
+          background: capeAlert.bg,
+          marginLeft: "auto",
+        }}>
+          ⚡ {capeAlert.label}
+        </span>
+      )}
+    </div>
+  )
+}
+
 // ── Forecast rows ─────────────────────────────────────────────────────────────
 
 function groupByDay(forecasts: HourlyForecast[]) {
@@ -297,6 +374,7 @@ function DayCard({
           </span>
         )}
       </div>
+      <WeatherBand rows={rows} />
       {rows.map(f => {
         const h = new Date(f.time).getUTCHours()
         return (
