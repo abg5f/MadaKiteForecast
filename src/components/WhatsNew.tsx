@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react"
 
-const VERSION_KEY = "mada-kite-v3"
+const VERSION_KEY = "mada-kite-v4"
 
 const FEATURES = [
   { emoji: "🌊", text: "Vue Radar météo en temps réel (Windy) — pluie, vent, satellite, houle" },
   { emoji: "📍", text: "Multi-spots : Pointe Faula & Cap Est avec balise live dédiée" },
   { emoji: "⏱", text: "Scroll automatique sur l'heure courante en Martinique" },
-  { emoji: "📱", text: "App installable sur iPhone et Android (PWA)" },
+  { emoji: "📱", text: "L'app est téléchargeable sur iPhone et Android — tuto d'installation disponible dans le menu ☰ en haut à droite" },
 ]
 
 export default function WhatsNew() {
