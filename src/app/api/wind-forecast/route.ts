@@ -11,13 +11,17 @@ export const dynamic = "force-dynamic"
 
 const MODELS: ModelType[] = ["GFS", "ICON", "ERA5", "AROME"]
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url)
+  const lat = parseFloat(searchParams.get("lat") ?? "14.55")
+  const lng = parseFloat(searchParams.get("lng") ?? "-60.83")
+
   const [gfsR, iconR, era5R, aromeR, yrR] = await Promise.allSettled([
-    fetchOpenMeteo("GFS"),
-    fetchOpenMeteo("ICON"),
-    fetchOpenMeteo("ERA5"),
-    fetchOpenMeteo("AROME"),
-    fetchYr(),
+    fetchOpenMeteo("GFS",   lat, lng),
+    fetchOpenMeteo("ICON",  lat, lng),
+    fetchOpenMeteo("ERA5",  lat, lng),
+    fetchOpenMeteo("AROME", lat, lng),
+    fetchYr(lat, lng),
   ])
 
   const results = [gfsR, iconR, era5R, aromeR]

@@ -1,11 +1,13 @@
 import Header from "@/components/Header"
 import WindForecast from "@/components/WindForecast"
 import WhatsNew from "@/components/WhatsNew"
+import { SpotProvider } from "@/components/SpotProvider"
 
 const INNER = { maxWidth: 780, margin: "0 auto", width: "100%" } as const
 
 export default function Home() {
   return (
+    <SpotProvider>
     <div style={{ minHeight: "100dvh", display: "flex", flexDirection: "column" }}>
 
       <Header />
@@ -34,5 +36,6 @@ export default function Home() {
         </p>
       </footer>
     </div>
+    </SpotProvider>
   )
 }

@@ -24,8 +24,8 @@ export interface AggregatedForecast {
   errors?: Record<string, string>
 }
 
-const LAT = parseFloat(process.env.SPOT_LAT ?? "14.55")
-const LNG = parseFloat(process.env.SPOT_LNG ?? "-60.83")
+const DEFAULT_LAT = parseFloat(process.env.SPOT_LAT ?? "14.55")
+const DEFAULT_LNG = parseFloat(process.env.SPOT_LNG ?? "-60.83")
 
 const OM_MODELS: Record<ModelType, { id: string; label: string }> = {
   GFS:   { id: "gfs_seamless",             label: "GFS · NOAA" },
@@ -35,12 +35,16 @@ const OM_MODELS: Record<ModelType, { id: string; label: string }> = {
 }
 
 // ---------- Open-Meteo ----------
-export async function fetchOpenMeteo(model: ModelType): Promise<SourceForecast> {
+export async function fetchOpenMeteo(
+  model: ModelType,
+  lat = DEFAULT_LAT,
+  lng = DEFAULT_LNG,
+): Promise<SourceForecast> {
   const { id, label } = OM_MODELS[model]
 
   const qs = new URLSearchParams({
-    latitude: String(LAT),
-    longitude: String(LNG),
+    latitude: String(lat),
+    longitude: String(lng),
     hourly: "windspeed_10m,winddirection_10m,windgusts_10m",
     windspeed_unit: "kn",
     timezone: "America/Martinique",
@@ -83,9 +87,12 @@ export async function fetchOpenMeteo(model: ModelType): Promise<SourceForecast> 
 }
 
 // ---------- Yr.no (Norwegian Met, free, no key) ----------
-export async function fetchYr(): Promise<SourceForecast> {
+export async function fetchYr(
+  lat = DEFAULT_LAT,
+  lng = DEFAULT_LNG,
+): Promise<SourceForecast> {
   const res = await fetch(
-    `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${LAT}&lon=${LNG}`,
+    `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lng}`,
     {
       headers: { "User-Agent": "MadaKiteForecast/1.0 github.com/abg5f/MadaKiteForecast" },
       next: { revalidate: 1800 },

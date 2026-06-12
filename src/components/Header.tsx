@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from "react"
 import AppMenu from "./AppMenu"
 import CapEstStation from "./CapEstStation"
+import { useSpot } from "./SpotProvider"
+import { SPOTS } from "@/lib/spots"
 
 // ── SVG ───────────────────────────────────────────────────────────────────────
 
@@ -32,39 +34,12 @@ function MartiniqueFlag({ size = 16 }: { size?: number }) {
   )
 }
 
-// ── Spots ─────────────────────────────────────────────────────────────────────
-
-type Spot = {
-  id: string
-  name: string
-  stationLabel: string
-  stationSrc: string | null
-  stationHeight: number
-}
-
-const SPOTS: Spot[] = [
-  {
-    id: "faula",
-    name: "Pointe Faula",
-    stationLabel: "Balise Live · Airfly",
-    stationSrc: "https://www.windguru.cz/wgs-iframe.php?s=4164&wj=knots&tj=c&tmprh=1&avg_min=0&date_format=Y-m-d%20H%3Ai%3As%20T",
-    stationHeight: 68,
-  },
-  {
-    id: "capest",
-    name: "Cap Est",
-    stationLabel: "Balise Live · Tempest WX",
-    stationSrc: null,
-    stationHeight: 0,
-  },
-]
-
 // ── Header ────────────────────────────────────────────────────────────────────
 
 const INNER: React.CSSProperties = { maxWidth: 780, margin: "0 auto", width: "100%" }
 
 export default function Header() {
-  const [spot, setSpot]       = useState<Spot>(SPOTS[0])
+  const { spot, setSpot }       = useSpot()
   const [dropOpen, setDropOpen] = useState(false)
   const dropRef = useRef<HTMLDivElement>(null)
 

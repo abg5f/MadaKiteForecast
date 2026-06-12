@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback, useLayoutEffect, useRef } from "react
 import FilterToggle, { type SourceFilter } from "./FilterToggle"
 import WeekCalendar from "./WeekCalendar"
 import type { AggregatedForecast, HourlyForecast, ModelType } from "@/lib/api-clients"
+import { useSpot } from "./SpotProvider"
 
 const POLL_INTERVAL = 30 * 60 * 1000
 
@@ -324,6 +325,7 @@ function SkeletonRows() {
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 export default function WindForecast() {
+  const { spot } = useSpot()
   const [data, setData]       = useState<AggregatedForecast | null>(null)
   const [error, setError]     = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
@@ -332,8 +334,9 @@ export default function WindForecast() {
   const [model, setModel]     = useState<ModelType>("AROME")
 
   const fetchData = useCallback(async () => {
+    setLoading(true)
     try {
-      const res = await fetch("/api/wind-forecast")
+      const res = await fetch(`/api/wind-forecast?lat=${spot.lat}&lng=${spot.lng}`)
       if (!res.ok) throw new Error((await res.json()).error ?? `HTTP ${res.status}`)
       setData(await res.json())
       setError(null)
@@ -342,7 +345,7 @@ export default function WindForecast() {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [spot.lat, spot.lng])
 
   useEffect(() => {
     fetchData()
