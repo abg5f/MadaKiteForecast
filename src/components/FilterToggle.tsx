@@ -4,10 +4,11 @@ import { useLayoutEffect, useRef, useState } from "react"
 import type { ModelType, AggregatedForecast } from "@/lib/api-clients"
 
 const MODELS: { value: ModelType; label: string }[] = [
-  { value: "AROME", label: "AROME" },
-  { value: "GFS",   label: "GFS" },
-  { value: "ICON",  label: "ICON" },
-  { value: "ERA5",  label: "ERA5" },
+  { value: "AROME",       label: "AROME" },
+  { value: "GFS",         label: "GFS" },
+  { value: "ICON",        label: "ICON" },
+  { value: "ERA5",        label: "ERA5" },
+  { value: "WEATHERFLOW", label: "CKS" },
 ]
 
 interface GliderTabsProps<T extends string> {

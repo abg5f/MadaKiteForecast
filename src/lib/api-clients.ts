@@ -1,5 +1,5 @@
-export type ModelType = "GFS" | "ICON" | "ERA5" | "AROME"
-export type SourceName = "openmeteo" | "yr"
+export type ModelType = "GFS" | "ICON" | "ERA5" | "AROME" | "WEATHERFLOW"
+export type SourceName = "openmeteo" | "yr" | "weatherflow"
 
 export interface HourlyForecast {
   time: string       // ISO timestamp
@@ -32,7 +32,8 @@ export interface AggregatedForecast {
 const DEFAULT_LAT = parseFloat(process.env.SPOT_LAT ?? "14.55")
 const DEFAULT_LNG = parseFloat(process.env.SPOT_LNG ?? "-60.83")
 
-const OM_MODELS: Record<ModelType, { id: string; label: string }> = {
+type OmModel = Exclude<ModelType, "WEATHERFLOW">
+const OM_MODELS: Record<OmModel, { id: string; label: string }> = {
   GFS:   { id: "gfs_seamless",             label: "GFS · NOAA" },
   ICON:  { id: "icon_seamless",            label: "ICON · DWD" },
   ERA5:  { id: "era5",                     label: "ERA5 · ECMWF" },
@@ -41,7 +42,7 @@ const OM_MODELS: Record<ModelType, { id: string; label: string }> = {
 
 // ---------- Open-Meteo ----------
 export async function fetchOpenMeteo(
-  model: ModelType,
+  model: OmModel,
   lat = DEFAULT_LAT,
   lng = DEFAULT_LNG,
 ): Promise<SourceForecast> {
@@ -139,6 +140,51 @@ export async function fetchYr(
   return {
     source: "yr",
     label: "Yr · Met Norway",
+    updatedAt: new Date().toISOString(),
+    forecasts,
+  }
+}
+
+// ---------- WeatherFlow Tempest (balise CKS Cap Est) ----------
+export async function fetchWeatherFlow(): Promise<SourceForecast> {
+  const token = process.env.CKS_TOKEN
+  const stationId = process.env.CKS_STATION_ID ?? "122730"
+  if (!token) throw new Error("CKS_TOKEN not configured")
+
+  const res = await fetch(
+    `https://swd.weatherflow.com/swd/rest/better_forecast?station_id=${stationId}&token=${token}`,
+    { next: { revalidate: 300 } },
+  )
+
+  if (!res.ok) throw new Error(`WeatherFlow HTTP ${res.status}`)
+
+  const data = await res.json()
+
+  type WfHourly = {
+    time: number
+    wind_avg: number | null
+    wind_gust: number | null
+    wind_direction: number | null
+    precip_probability?: number | null
+  }
+
+  const forecasts: HourlyForecast[] = ((data.forecast?.hourly ?? []) as WfHourly[])
+    .map((h): HourlyForecast | null => {
+      if (h.wind_avg == null || h.wind_direction == null) return null
+      return {
+        time:      new Date(h.time * 1000).toISOString(),
+        windSpeed: Math.round(h.wind_avg * 1.944),
+        windGust:  Math.round((h.wind_gust ?? h.wind_avg) * 1.944),
+        windDir:   Math.round(h.wind_direction),
+        precipProb: h.precip_probability ?? undefined,
+      }
+    })
+    .filter((f): f is HourlyForecast => f !== null)
+
+  return {
+    source: "weatherflow",
+    model: "WEATHERFLOW",
+    label: "CKS · Cap Est",
     updatedAt: new Date().toISOString(),
     forecasts,
   }
