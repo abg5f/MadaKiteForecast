@@ -1,13 +1,12 @@
 # Context — Faula (MadaKiteForecast)
 
-> Dernière mise à jour : 2026-06-15
+> Dernière mise à jour : 2026-06-23
 
 ## État actuel
 
 - App Next.js 15 / React 19 / Tailwind v4 déployée sur Vercel — agrégateur de prévisions vent pour Pointe Faula, Martinique
-- 4 modèles Open-Meteo (GFS, ICON, ERA5, AROME) + WeatherFlow CKS fonctionnels
-- Onglet "CKS" dans FilterToggle → affiche les prévisions WeatherFlow `better_forecast` (station 122730, Cap Est)
-- WeatherFlow inclus dans la moyenne multi-sources
+- 4 modèles Open-Meteo (GFS, ICON, ERA5, AROME) + WeatherFlow CKS fonctionnels en back-end
+- Onglet "CKS" masqué de l'UI (retiré de `MODELS` dans `FilterToggle.tsx`) — WeatherFlow toujours fetchée et incluse dans la moyenne
 - `.env.local` a `CKS_TOKEN` + `CKS_STATION_ID=122730` — **à ajouter manuellement dans Vercel** (pas committé)
 
 ## Décisions prises
@@ -16,6 +15,8 @@
 - `ModelType` étendu avec `"WEATHERFLOW"` ; `OmModel = Exclude<ModelType, "WEATHERFLOW">` pour garder le typage strict d'`OM_MODELS`
 - Données WeatherFlow stockées dans `openMeteo["WEATHERFLOW"]` (pragmatique — évite de créer un nouveau champ dans `AggregatedForecast`)
 - Conversion m/s → nœuds : ×1.944
+- Onglet CKS masqué côté UI uniquement (pas supprimé du back-end) — pour le réactiver, rajouter `{ value: "WEATHERFLOW", label: "CKS" }` dans `MODELS` de `FilterToggle.tsx`
+- Lien Instagram mis à jour : `@paulphotopeche` (était `@poloduf_fishing`)
 
 ## En cours / TODOs
 
@@ -24,7 +25,7 @@
 
 ## Problèmes connus
 
-- Anémomètre Tempest ST-00127822 hors ligne (batterie basse 2.18V) — l'onglet CKS affiche quand même les prévisions WeatherFlow, mais pas de mesures in-situ
+- Anémomètre Tempest ST-00127822 hors ligne (batterie basse 2.18V) — WeatherFlow retourne des prévisions mais pas de mesures in-situ
 - Yr.no présent dans `AggregatedForecast` mais non exposé dans l'UI (champ `yr` inutilisé)
 
 ## Fichiers clés
@@ -33,8 +34,11 @@
 |---|---|
 | `src/lib/api-clients.ts` | Types + fetch de toutes les sources (OpenMeteo, Yr, WeatherFlow) |
 | `src/app/api/wind-forecast/route.ts` | Route API — Promise.allSettled sur 5 sources + moyenne |
-| `src/components/FilterToggle.tsx` | Sélecteur de modèle (AROME/GFS/ICON/ERA5/CKS) |
+| `src/components/FilterToggle.tsx` | Sélecteur de modèle (AROME/GFS/ICON/ERA5) — CKS masqué |
 | `src/components/WindForecast.tsx` | Composant principal : fetch, polling 15 min, rendu |
+| `src/app/page.tsx` | Footer avec lien Instagram |
+| `src/components/AppMenu.tsx` | Menu "À propos" avec lien Instagram + handle |
+| `src/components/FAQ.tsx` | FAQ avec lien Instagram dans section développeur |
 | `.env.local` | `CKS_TOKEN`, `CKS_STATION_ID`, `SPOT_LAT/LNG` — non committé |
 
 ---

@@ -125,7 +125,7 @@ const ITEMS: Item[] = [
         {T.p("Mada Kite Forecast a été conçu et développé par Paul-Henri Dufourcq, kitesurfeur et développeur web basé en Martinique.")}
         {T.p("Le projet est né d'un besoin simple : avoir une source unique, lisible sur mobile, pour savoir si ça souffle à la Pointe Faula avant d'y aller. Les apps météo classiques ne donnent pas une lecture intuitive pour le kitesurf.")}
         {T.ul([
-          "Instagram : <a href='https://www.instagram.com/poloduf_fishing/' target='_blank' rel='noopener' style='color:var(--brand);font-weight:600;text-decoration:none'>@poloduf_fishing</a>",
+          "Instagram : <a href='https://www.instagram.com/paulphotopeche/' target='_blank' rel='noopener' style='color:var(--brand);font-weight:600;text-decoration:none'>@paulphotopeche</a>",
           "GitHub : <a href='https://github.com/abg5f' target='_blank' rel='noopener' style='color:var(--brand);font-weight:600;text-decoration:none'>github.com/abg5f</a>",
         ])}
       </div>

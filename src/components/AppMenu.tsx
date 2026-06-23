@@ -130,11 +130,11 @@ const ITEMS: Item[] = [
         {p("Conçu et développé par Paul-Henri Dufourcq, kitesurfeur et développeur web basé en Martinique.")}
         {p("Le projet est né d'un besoin simple : avoir une source unique, lisible sur mobile, pour savoir si ça souffle à la Pointe Faula avant d'y aller.")}
         <div style={{ display: "flex", gap: 10, marginTop: 10, flexWrap: "wrap" }}>
-          <a href="https://www.instagram.com/poloduf_fishing/" target="_blank" rel="noopener"
+          <a href="https://www.instagram.com/paulphotopeche/" target="_blank" rel="noopener"
             style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "8px 16px",
               borderRadius: "var(--r-pill)", background: "var(--surface)", border: "1px solid var(--border)",
               fontSize: 13, color: "var(--text)", fontWeight: 600, textDecoration: "none" }}>
-            📸 @poloduf_fishing
+            📸 @paulphotopeche
           </a>
         </div>
       </>

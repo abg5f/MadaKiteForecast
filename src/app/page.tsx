@@ -26,7 +26,7 @@ export default function Home() {
         <p style={{ fontSize: 11, color: "var(--muted-text)", marginTop: 3 }}>
           Fait par{" "}
           <a
-            href="https://www.instagram.com/poloduf_fishing/"
+            href="https://www.instagram.com/paulphotopeche/"
             target="_blank"
             rel="noopener noreferrer"
             style={{ color: "var(--brand)", fontWeight: 600, textDecoration: "none" }}
