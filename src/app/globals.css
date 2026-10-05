@@ -1,132 +1,173 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+/* ── Mada Kite · design tokens ─────────────────────────────────────────────
+   Scene: a kiter on the beach at Faula, phone in hand under harsh tropical sun,
+   deciding in ten seconds whether to rig and which kite. Light, sand-tinted,
+   high contrast. The wind scale carries the colour; the UI stays out of the way. */
+
+:root {
+  --bg: oklch(0.972 0.01 85);
+  --surface: oklch(0.992 0.005 85);
+  --surface-2: oklch(0.948 0.013 85);
+  --line: oklch(0.885 0.014 85);
+  --line-soft: oklch(0.925 0.011 85);
+
+  --ink: oklch(0.23 0.03 252);
+  --ink-2: oklch(0.4 0.025 252);
+  --ink-3: oklch(0.52 0.02 252);
+
+  /* Signal orange: buoys, flags, "now". */
+  --signal: oklch(0.63 0.19 38);
+  --signal-ink: oklch(0.5 0.17 36);
+  --signal-soft: oklch(0.94 0.04 50);
+
+  --good: oklch(0.52 0.13 155);
+  --good-soft: oklch(0.93 0.05 155);
+  --warn: oklch(0.55 0.13 70);
+  --warn-soft: oklch(0.94 0.06 85);
+  --danger: oklch(0.52 0.19 25);
+  --danger-soft: oklch(0.94 0.04 25);
+
+  --shadow: 0 1px 2px oklch(0.3 0.03 252 / 0.06), 0 4px 16px -6px oklch(0.3 0.03 252 / 0.1);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: oklch(0.18 0.02 252);
+    --surface: oklch(0.215 0.022 252);
+    --surface-2: oklch(0.255 0.024 252);
+    --line: oklch(0.32 0.024 252);
+    --line-soft: oklch(0.27 0.022 252);
+
+    --ink: oklch(0.95 0.012 85);
+    --ink-2: oklch(0.8 0.015 85);
+    --ink-3: oklch(0.68 0.015 85);
+
+    --signal: oklch(0.7 0.17 45);
+    --signal-ink: oklch(0.78 0.14 50);
+    --signal-soft: oklch(0.3 0.06 45);
+
+    --good: oklch(0.75 0.14 155);
+    --good-soft: oklch(0.3 0.05 155);
+    --warn: oklch(0.8 0.13 80);
+    --warn-soft: oklch(0.31 0.05 80);
+    --danger: oklch(0.72 0.16 25);
+    --danger-soft: oklch(0.3 0.06 25);
+
+    --shadow: 0 1px 2px oklch(0 0 0 / 0.3);
+    color-scheme: dark;
+  }
+}
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter, ui-sans-serif, system-ui, sans-serif);
-  --font-mono: ui-monospace, "Fira Code", monospace;
-  --font-heading: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-}
+  --font-sans: var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
+  --font-num: var(--font-barlow-condensed), var(--font-barlow), ui-sans-serif, sans-serif;
 
-/* ── Mada Kite Forecast · Mikaza design system ── */
-:root {
-  /* shadcn tokens — mapped to Mikaza palette */
-  --background:           #fdfcf3;
-  --foreground:           #1a1a1a;
-  --card:                 #ffffff;
-  --card-foreground:      #1a1a1a;
-  --popover:              #ffffff;
-  --popover-foreground:   #1a1a1a;
-  --primary:              #5C7062;
-  --primary-foreground:   #ffffff;
-  --secondary:            #f7f6ed;
-  --secondary-foreground: #4a4a4a;
-  --muted:                #f7f6ed;
-  --muted-foreground:     #a8a098;
-  --accent:               #f7f6ed;
-  --accent-foreground:    #4a4a4a;
-  --destructive:          #dc2626;
-  --border:               #e8e4d8;
-  --input:                #f7f6ed;
-  --ring:                 #5C7062;
-  --radius:               1rem;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-signal: var(--signal);
+  --color-signal-ink: var(--signal-ink);
+  --color-signal-soft: var(--signal-soft);
+  --color-good: var(--good);
+  --color-good-soft: var(--good-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
 
-  /* Mikaza brand tokens */
-  --brand:        #5C7062;
-  --brand-hover:  #4a5c50;
-  --bg:           #fdfcf3;
-  --surface:      #f7f6ed;
-  --border-soft:  #f0ede3;
-  --text:         #1a1a1a;
-  --text-2:       #4a4a4a;
-  --label:        #6b6456;
-  --muted-text:   #a8a098;
-  --faint:        #c4b8b0;
-
-  /* Semantic */
-  --success:      #059669;
-  --success-soft: #d1fae5;
-  --warning:      #f59e0b;
-  --warning-soft: #fef3c7;
-  --danger:       #dc2626;
-  --danger-soft:  #fee2e2;
-  --info:         #2866ce;
-  --info-soft:    #dbeafe;
-
-  /* Radii */
-  --r-pill:  99px;
-  --r-card:  16px;
-  --r-sm:    10px;
-
-  /* Shadows */
-  --shadow-card: 0 1px 4px rgba(0,0,0,0.06);
-  --shadow-sm:   0 1px 2px rgba(0,0,0,0.04);
-}
-
-@keyframes live-pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.4; }
+  --shadow-card: var(--shadow);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 @layer base {
-  * { @apply border-border outline-ring/50; }
-  html, body {
-    height: 100%;
-    overscroll-behavior: none;
-    @apply font-sans;
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
   }
   body {
     background: var(--bg);
-    color: var(--text);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "tnum" 1;
+    min-height: 100dvh;
+  }
+  button,
+  a,
+  select,
+  summary {
+    touch-action: manipulation;
+  }
+  :focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 2px;
+    border-radius: 6px;
   }
 }
 
-/* ── Responsive ── */
-@media (min-width: 640px) {
-  :root {
-    --r-card: 18px;
+@layer components {
+  .num {
+    font-family: var(--font-num);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  .eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .scroll-x {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scroll-snap-type: x proximity;
   }
 }
 
-@media (min-width: 1024px) {
-  :root {
-    --r-card: 20px;
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.8);
+  }
+}
+
+@keyframes shimmer {
+  from {
+    opacity: 0.55;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.live-dot {
+  animation: pulse-dot 1.8s var(--ease-out-quart) infinite;
+}
+
+.skeleton {
+  background: var(--surface-2);
+  animation: shimmer 0.9s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot,
+  .skeleton {
+    animation: none;
+  }
+  * {
+    transition-duration: 0ms !important;
   }
 }

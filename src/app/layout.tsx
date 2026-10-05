@@ -1,57 +1,61 @@
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import type { Metadata, Viewport } from "next"
+import { Barlow, Barlow_Condensed } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css"
 
-const inter = Inter({
+const barlow = Barlow({
   subsets: ["latin"],
-  variable: "--font-inter",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-barlow",
+  display: "swap",
+})
+
+const barlowCondensed = Barlow_Condensed({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-barlow-condensed",
   display: "swap",
 })
 
 const baseUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
   : process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000"
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3000"
+
+const description =
+  "Prévisions vent kitesurf pour la Pointe Faula, Cap Est et Cap Chevalier (Martinique). Consensus de 7 modèles calibré en direct sur la balise, vent mesuré en temps réel."
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
-  title: "Mada Kite Forecast — Prévisions kitesurf Martinique",
-  description:
-    "Agrégateur météo des vents multi-sources en Martinique. Prévisions Open-Meteo & Yr.no pour la Pointe Faula, vue calendrier avec étoiles, balise live.",
+  title: "Mada Kite · Vent Pointe Faula, Martinique",
+  description,
   openGraph: {
-    title: "Mada Kite Forecast 🪁",
-    description:
-      "Prévisions vent · Pointe Faula, Martinique. Étoiles par jour, balise live, plusieurs modèles météo.",
+    title: "Mada Kite · Vent Pointe Faula",
+    description,
     url: baseUrl,
     siteName: "Mada Kite Forecast",
     locale: "fr_FR",
     type: "website",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Mada Kite Forecast 🪁",
-    description:
-      "Prévisions vent pour les kitesurfeurs de la Pointe Faula, Martinique.",
-  },
-  icons: {
-    icon: "/favicon.svg",
-    apple: "/apple-icon",
-  },
+  twitter: { card: "summary_large_image", title: "Mada Kite · Vent Pointe Faula", description },
+  icons: { icon: "/favicon.svg", apple: "/apple-icon" },
   manifest: "/manifest.webmanifest",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "black-translucent",
-    title: "Mada Kite",
-  },
+  appleWebApp: { capable: true, statusBarStyle: "default", title: "Mada Kite" },
+}
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f6f3ea" },
+    { media: "(prefers-color-scheme: dark)", color: "#141a24" },
+  ],
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">
+    <html lang="fr" className={`${barlow.variable} ${barlowCondensed.variable} antialiased`}>
+      <body>
         {children}
         <Analytics />
         <SpeedInsights />

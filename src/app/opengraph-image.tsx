@@ -11,7 +11,7 @@ export default function OGImage() {
       style={{
         width: "100%",
         height: "100%",
-        background: "linear-gradient(160deg, #2e4035 0%, #3d5244 50%, #4a6052 100%)",
+        background: "linear-gradient(160deg, #141c28 0%, #1f2a3a 55%, #2a3a50 100%)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -82,11 +82,11 @@ export default function OGImage() {
             strokeWidth="0.8"
           />
           {/* Center strut */}
-          <line x1="25" y1="3" x2="25" y2="27" stroke="#3a4e40" strokeWidth="1.2" />
+          <line x1="25" y1="3" x2="25" y2="27" stroke="#1f2a3a" strokeWidth="1.2" />
           {/* Left strut */}
-          <path d="M 14,11 Q 18,20 20.5,26" stroke="#3a4e40" strokeWidth="0.7" fill="none" opacity="0.8" />
+          <path d="M 14,11 Q 18,20 20.5,26" stroke="#1f2a3a" strokeWidth="0.7" fill="none" opacity="0.8" />
           {/* Right strut */}
-          <path d="M 36,11 Q 32,20 29.5,26" stroke="#3a4e40" strokeWidth="0.7" fill="none" opacity="0.8" />
+          <path d="M 36,11 Q 32,20 29.5,26" stroke="#1f2a3a" strokeWidth="0.7" fill="none" opacity="0.8" />
           {/* Lines to bar */}
           <line x1="25" y1="27" x2="18" y2="34" stroke="rgba(255,255,255,0.65)" strokeWidth="1.3" />
           <line x1="25" y1="27" x2="32" y2="34" stroke="rgba(255,255,255,0.65)" strokeWidth="1.3" />
@@ -122,7 +122,7 @@ export default function OGImage() {
 
         {/* Source badges */}
         <div style={{ display: "flex", gap: 14 }}>
-          {["🌊 Open-Meteo", "🇳🇴 Yr.no", "📡 Balise live"].map((label) => (
+          {["7 modèles", "Calibré sur la balise", "Vent en direct"].map((label) => (
             <div
               key={label}
               style={{
