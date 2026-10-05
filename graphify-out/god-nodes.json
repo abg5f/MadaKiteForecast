@@ -1,0 +1,76 @@
+{
+ "god_nodes": [
+  {
+   "id": "src/components/ForecastApp.tsx",
+   "label": "ForecastApp.tsx",
+   "type": "file",
+   "degree": 32
+  },
+  {
+   "id": "src/components/DayDetail.tsx",
+   "label": "DayDetail.tsx",
+   "type": "file",
+   "degree": 23
+  },
+  {
+   "id": "src/lib/wind/forecast.ts",
+   "label": "forecast.ts",
+   "type": "file",
+   "degree": 23
+  },
+  {
+   "id": "src/lib/wind/types.ts",
+   "label": "types.ts",
+   "type": "file",
+   "degree": 20
+  },
+  {
+   "id": "src/lib/wind/days.ts",
+   "label": "days.ts",
+   "type": "file",
+   "degree": 19
+  },
+  {
+   "id": "src/lib/time.ts",
+   "label": "time.ts",
+   "type": "file",
+   "degree": 18
+  },
+  {
+   "id": "src/components/LiveStation.tsx",
+   "label": "LiveStation.tsx",
+   "type": "file",
+   "degree": 17
+  },
+  {
+   "id": "src/lib/wind/scale.ts",
+   "label": "scale.ts",
+   "type": "file",
+   "degree": 17
+  },
+  {
+   "id": "src/components/HourGrid.tsx",
+   "label": "HourGrid.tsx",
+   "type": "file",
+   "degree": 16
+  },
+  {
+   "id": "src/components/ModelTable.tsx",
+   "label": "ModelTable.tsx",
+   "type": "file",
+   "degree": 16
+  },
+  {
+   "id": "src/components/icons.tsx",
+   "label": "icons.tsx",
+   "type": "file",
+   "degree": 14
+  },
+  {
+   "id": "src/lib/spots.ts",
+   "label": "spots.ts",
+   "type": "file",
+   "degree": 12
+  }
+ ]
+}

@@ -1,0 +1,2184 @@
+{
+ "nodes": [
+  {
+   "id": "src/app/a-propos/page.tsx",
+   "label": "page.tsx",
+   "type": "file",
+   "summary": ""
+  },
+  {
+   "id": "src/app/a-propos/page.tsx#metadata",
+   "label": "metadata",
+   "type": "symbol",
+   "summary": "exported from src/app/a-propos/page.tsx"
+  },
+  {
+   "id": "src/app/a-propos/page.tsx#About",
+   "label": "About",
+   "type": "symbol",
+   "summary": "exported from src/app/a-propos/page.tsx"
+  },
+  {
+   "id": "src/app/api/forecast/route.ts",
+   "label": "route.ts",
+   "type": "file",
+   "summary": ""
+  },
+  {
+   "id": "src/app/api/forecast/route.ts#dynamic",
+   "label": "dynamic",
+   "type": "symbol",
+   "summary": "exported from src/app/api/forecast/route.ts"
+  },
+  {
+   "id": "src/app/api/forecast/route.ts#GET",
+   "label": "GET",
+   "type": "symbol",
+   "summary": "exported from src/app/api/forecast/route.ts"
+  },
+  {
+   "id": "src/app/api/station/route.ts",
+   "label": "route.ts",
+   "type": "file",
+   "summary": ""
+  },
+  {
+   "id": "src/app/api/station/route.ts#dynamic",
+   "label": "dynamic",
+   "type": "symbol",
+   "summary": "exported from src/app/api/station/route.ts"
+  },
+  {
+   "id": "src/app/api/station/route.ts#GET",
+   "label": "GET",
+   "type": "symbol",
+   "summary": "exported from src/app/api/station/route.ts"
+  },
+  {
+   "id": "src/app/apple-icon.tsx",
+   "label": "apple-icon.tsx",
+   "type": "file",
+   "summary": ""
+  },
+  {
+   "id": "src/app/apple-icon.tsx#runtime",
+   "label": "runtime",
+   "type": "symbol",
+   "summary": "exported from src/app/apple-icon.tsx"
+  },
+  {
+   "id": "src/app/apple-icon.tsx#size",
+   "label": "size",
+   "type": "symbol",
+   "summary": "exported from src/app/apple-icon.tsx"
+  },
+  {
+   "id": "src/app/apple-icon.tsx#contentType",
+   "label": "contentType",
+   "type": "symbol",
+   "summary": "exported from src/app/apple-icon.tsx"
+  },
+  {
+   "id": "src/app/apple-icon.tsx#AppleIcon",
+   "label": "AppleIcon",
+   "type": "symbol",
+   "summary": "exported from src/app/apple-icon.tsx"
+  },
+  {
+   "id": "src/app/icon.tsx",
+   "label": "icon.tsx",
+   "type": "file",
+   "summary": ""
+  },
+  {
+   "id": "src/app/icon.tsx#runtime",
+   "label": "runtime",
+   "type": "symbol",
+   "summary": "exported from src/app/icon.tsx"
+  },
+  {
+   "id": "src/app/icon.tsx#size",
+   "label": "size",
+   "type": "symbol",
+   "summary": "exported from src/app/icon.tsx"
+  },
+  {
+   "id": "src/app/icon.tsx#contentType",
+   "label": "contentType",
+   "type": "symbol",
+   "summary": "exported from src/app/icon.tsx"
+  },
+  {
+   "id": "src/app/icon.tsx#Icon",
+   "label": "Icon",
+   "type": "symbol",
+   "summary": "exported from src/app/icon.tsx"
+  },
+  {
+   "id": "src/app/layout.tsx",
+   "label": "layout.tsx",
+   "type": "file",
+   "summary": ""
+  },
+  {
+   "id": "src/app/layout.tsx#metadata",
+   "label": "metadata",
+   "type": "symbol",
+   "summary": "exported from src/app/layout.tsx"
+  },
+  {
+   "id": "src/app/layout.tsx#viewport",
+   "label": "viewport",
+   "type": "symbol",
+   "summary": "exported from src/app/layout.tsx"
+  },
+  {
+   "id": "src/app/layout.tsx#RootLayout",
+   "label": "RootLayout",
+   "type": "symbol",
+   "summary": "exported from src/app/layout.tsx"
+  },
+  {
+   "id": "src/app/manifest.ts",
+   "label": "manifest.ts",
+   "type": "file",
+   "summary": ""
+  },
+  {
+   "id": "src/app/manifest.ts#manifest",
+   "label": "manifest",
+   "type": "symbol",
+   "summary": "exported from src/app/manifest.ts"
+  },
+  {
+   "id": "src/app/opengraph-image.tsx",
+   "label": "opengraph-image.tsx",
+   "type": "file",
+   "summary": ""
+  },
+  {
+   "id": "src/app/opengraph-image.tsx#runtime",
+   "label": "runtime",
+   "type": "symbol",
+   "summary": "exported from src/app/opengraph-image.tsx"
+  },
+  {
+   "id": "src/app/opengraph-image.tsx#alt",
+   "label": "alt",
+   "type": "symbol",
+   "summary": "exported from src/app/opengraph-image.tsx"
+  },
+  {
+   "id": "src/app/opengraph-image.tsx#size",
+   "label": "size",
+   "type": "symbol",
+   "summary": "exported from src/app/opengraph-image.tsx"
+  },
+  {
+   "id": "src/app/opengraph-image.tsx#contentType",
+   "label": "contentType",
+   "type": "symbol",
+   "summary": "exported from src/app/opengraph-image.tsx"
+  },
+  {
+   "id": "src/app/opengraph-image.tsx#OGImage",
+   "label": "OGImage",
+   "type": "symbol",
+   "summary": "exported from src/app/opengraph-image.tsx"
+  },
+  {
+   "id": "src/app/page.tsx",
+   "label": "page.tsx",
+   "type": "file",
+   "summary": ""
+  },
+  {
+   "id": "src/app/page.tsx#Home",
+   "label": "Home",
+   "type": "symbol",
+   "summary": "exported from src/app/page.tsx"
+  },
+  {
+   "id": "src/components/DayDetail.tsx",
+   "label": "DayDetail.tsx",
+   "type": "file",
+   "summary": ""
+  },
+  {
+   "id": "src/components/DayDetail.tsx#DayDetail",
+   "label": "DayDetail",
+   "type": "symbol",
+   "summary": "exported from src/components/DayDetail.tsx"
+  },
+  {
+   "id": "src/components/DayStrip.tsx",
+   "label": "DayStrip.tsx",
+   "type": "file",
+   "summary": ""
+  },
+  {
+   "id": "src/components/DayStrip.tsx#DayStrip",
+   "label": "DayStrip",
+   "type": "symbol",
+   "summary": "exported from src/components/DayStrip.tsx"
+  },
+  {
+   "id": "src/components/ForecastApp.tsx",
+   "label": "ForecastApp.tsx",
+   "type": "file",
+   "summary": "Keep the last good data on screen; flag the failure."
+  },
+  {
+   "id": "src/components/ForecastApp.tsx#ForecastApp",
+   "label": "ForecastApp",
+   "type": "symbol",
+   "summary": "exported from src/components/ForecastApp.tsx"
+  },
+  {
+   "id": "src/components/HourGrid.tsx",
+   "label": "HourGrid.tsx",
+   "type": "file",
+   "summary": ""
+  },
+  {
+   "id": "src/components/HourGrid.tsx#HourGrid",
+   "label": "HourGrid",
+   "type": "symbol",
+   "summary": "exported from src/components/HourGrid.tsx"
+  },
+  {
+   "id": "src/components/icons.tsx",
+   "label": "icons.tsx",
+   "type": "file",
+   "summary": ""
+  },
+  {
+   "id": "src/components/icons.tsx#KiteMark",
+   "label": "KiteMark",
+   "type": "symbol",
+   "summary": "exported from src/components/icons.tsx"
+  },
+  {
+   "id": "src/components/icons.tsx#DirArrow",
+   "label": "DirArrow",
+   "type": "symbol",
+   "summary": "exported from src/components/icons.tsx"
+  },
+  {
+   "id": "src/components/icons.tsx#Stars",
+   "label": "Stars",
+   "type": "symbol",
+   "summary": "exported from src/components/icons.tsx"
+  },
+  {
+   "id": "src/components/icons.tsx#Icon",
+   "label": "Icon",
+   "type": "symbol",
+   "summary": "exported from src/components/icons.tsx"
+  },
+  {
+   "id": "src/components/LiveStation.tsx",
+   "label": "LiveStation.tsx",
+   "type": "file",
+   "summary": "── 12 h sparkline: measured vs forecast ─────────────────────────────────────"
+  },
+  {
+   "id": "src/components/LiveStation.tsx#LiveStation",
+   "label": "LiveStation",
+   "type": "symbol",
+   "summary": "exported from src/components/LiveStation.tsx"
+  },
+  {
+   "id": "src/components/ModelTable.tsx",
+   "label": "ModelTable.tsx",
+   "type": "file",
+   "summary": "Day boundary marker, drawn as an inset shadow so it survives coloured cells."
+  },
+  {
+   "id": "src/components/ModelTable.tsx#ModelTable",
+   "label": "ModelTable",
+   "type": "symbol",
+   "summary": "exported from src/components/ModelTable.tsx"
+  },
+  {
+   "id": "src/components/RadarMap.tsx",
+   "label": "RadarMap.tsx",
+   "type": "file",
+   "summary": ""
+  },
+  {
+   "id": "src/components/RadarMap.tsx#RadarMap",
+   "label": "RadarMap",
+   "type": "symbol",
+   "summary": "exported from src/components/RadarMap.tsx"
+  },
+  {
+   "id": "src/components/WindChart.tsx",
+   "label": "WindChart.tsx",
+   "type": "file",
+   "summary": ""
+  },
+  {
+   "id": "src/components/WindChart.tsx#WindChart",
+   "label": "WindChart",
+   "type": "symbol",
+   "summary": "exported from src/components/WindChart.tsx"
+  },
+  {
+   "id": "src/lib/prefs.ts",
+   "label": "prefs.ts",
+   "type": "file",
+   "summary": "Per-device preferences in localStorage (rider weight, preferred view)."
+  },
+  {
+   "id": "src/lib/prefs.ts#usePref",
+   "label": "usePref",
+   "type": "symbol",
+   "summary": "exported from src/lib/prefs.ts"
+  },
+  {
+   "id": "src/lib/spots.ts",
+   "label": "spots.ts",
+   "type": "file",
+   "summary": ""
+  },
+  {
+   "id": "src/lib/spots.ts#SpotId",
+   "label": "SpotId",
+   "type": "symbol",
+   "summary": "exported from src/lib/spots.ts"
+  },
+  {
+   "id": "src/lib/spots.ts#StationConfig",
+   "label": "StationConfig",
+   "type": "symbol",
+   "summary": "exported from src/lib/spots.ts"
+  },
+  {
+   "id": "src/lib/spots.ts#Spot",
+   "label": "Spot",
+   "type": "symbol",
+   "summary": "exported from src/lib/spots.ts"
+  },
+  {
+   "id": "src/lib/spots.ts#SPOTS",
+   "label": "SPOTS",
+   "type": "symbol",
+   "summary": "exported from src/lib/spots.ts"
+  },
+  {
+   "id": "src/lib/spots.ts#REFERENCE_SPOT",
+   "label": "REFERENCE_SPOT",
+   "type": "symbol",
+   "summary": "exported from src/lib/spots.ts"
+  },
+  {
+   "id": "src/lib/spots.ts#getSpot",
+   "label": "getSpot",
+   "type": "symbol",
+   "summary": "exported from src/lib/spots.ts"
+  },
+  {
+   "id": "src/lib/time.ts",
+   "label": "time.ts",
+   "type": "file",
+   "summary": "Martinique is UTC-4 all year (no DST). All times in the app are unix seconds (UTC)."
+  },
+  {
+   "id": "src/lib/time.ts#TZ",
+   "label": "TZ",
+   "type": "symbol",
+   "summary": "exported from src/lib/time.ts"
+  },
+  {
+   "id": "src/lib/time.ts#localHour",
+   "label": "localHour",
+   "type": "symbol",
+   "summary": "exported from src/lib/time.ts"
+  },
+  {
+   "id": "src/lib/time.ts#localDate",
+   "label": "localDate",
+   "type": "symbol",
+   "summary": "exported from src/lib/time.ts"
+  },
+  {
+   "id": "src/lib/time.ts#nowSec",
+   "label": "nowSec",
+   "type": "symbol",
+   "summary": "exported from src/lib/time.ts"
+  },
+  {
+   "id": "src/lib/time.ts#fmtHour",
+   "label": "fmtHour",
+   "type": "symbol",
+   "summary": "exported from src/lib/time.ts"
+  },
+  {
+   "id": "src/lib/time.ts#fmtClock",
+   "label": "fmtClock",
+   "type": "symbol",
+   "summary": "exported from src/lib/time.ts"
+  },
+  {
+   "id": "src/lib/time.ts#fmtWeekday",
+   "label": "fmtWeekday",
+   "type": "symbol",
+   "summary": "exported from src/lib/time.ts"
+  },
+  {
+   "id": "src/lib/time.ts#fmtDayMonth",
+   "label": "fmtDayMonth",
+   "type": "symbol",
+   "summary": "exported from src/lib/time.ts"
+  },
+  {
+   "id": "src/lib/time.ts#fmtAgo",
+   "label": "fmtAgo",
+   "type": "symbol",
+   "summary": "exported from src/lib/time.ts"
+  },
+  {
+   "id": "src/lib/wind/days.ts",
+   "label": "days.ts",
+   "type": "file",
+   "summary": ""
+  },
+  {
+   "id": "src/lib/wind/days.ts#KITE_FIRST_HOUR",
+   "label": "KITE_FIRST_HOUR",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/days.ts"
+  },
+  {
+   "id": "src/lib/wind/days.ts#KITE_LAST_HOUR",
+   "label": "KITE_LAST_HOUR",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/days.ts"
+  },
+  {
+   "id": "src/lib/wind/days.ts#DaySummary",
+   "label": "DaySummary",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/days.ts"
+  },
+  {
+   "id": "src/lib/wind/days.ts#kiteHours",
+   "label": "kiteHours",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/days.ts"
+  },
+  {
+   "id": "src/lib/wind/days.ts#summarizeDays",
+   "label": "summarizeDays",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/days.ts"
+  },
+  {
+   "id": "src/lib/wind/forecast.ts",
+   "label": "forecast.ts",
+   "type": "file",
+   "summary": "── Open-Meteo (one request, every model) ────────────────────────────────────"
+  },
+  {
+   "id": "src/lib/wind/forecast.ts#buildForecast",
+   "label": "buildForecast",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/forecast.ts"
+  },
+  {
+   "id": "src/lib/wind/models.ts",
+   "label": "models.ts",
+   "type": "file",
+   "summary": "Models that actually cover Martinique on Open-Meteo. AROME (France / Antilles) is not"
+  },
+  {
+   "id": "src/lib/wind/models.ts#ModelDef",
+   "label": "ModelDef",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/models.ts"
+  },
+  {
+   "id": "src/lib/wind/models.ts#MODELS",
+   "label": "MODELS",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/models.ts"
+  },
+  {
+   "id": "src/lib/wind/scale.ts",
+   "label": "scale.ts",
+   "type": "file",
+   "summary": "Shared wind helpers (client + server): colour scale, kiteability, direction, kite size."
+  },
+  {
+   "id": "src/lib/wind/scale.ts#windColor",
+   "label": "windColor",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/scale.ts"
+  },
+  {
+   "id": "src/lib/wind/scale.ts#Kiteability",
+   "label": "Kiteability",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/scale.ts"
+  },
+  {
+   "id": "src/lib/wind/scale.ts#kiteability",
+   "label": "kiteability",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/scale.ts"
+  },
+  {
+   "id": "src/lib/wind/scale.ts#dirLabel",
+   "label": "dirLabel",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/scale.ts"
+  },
+  {
+   "id": "src/lib/wind/scale.ts#isOffshore",
+   "label": "isOffshore",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/scale.ts"
+  },
+  {
+   "id": "src/lib/wind/scale.ts#kiteSize",
+   "label": "kiteSize",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/scale.ts"
+  },
+  {
+   "id": "src/lib/wind/scale.ts#Confidence",
+   "label": "Confidence",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/scale.ts"
+  },
+  {
+   "id": "src/lib/wind/scale.ts#confidence",
+   "label": "confidence",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/scale.ts"
+  },
+  {
+   "id": "src/lib/wind/stations.ts",
+   "label": "stations.ts",
+   "type": "file",
+   "summary": "── Windguru (balise Airfly, Pointe Faula) ───────────────────────────────────"
+  },
+  {
+   "id": "src/lib/wind/stations.ts#fetchStationHistory",
+   "label": "fetchStationHistory",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/stations.ts"
+  },
+  {
+   "id": "src/lib/wind/stations.ts#fetchStation",
+   "label": "fetchStation",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/stations.ts"
+  },
+  {
+   "id": "src/lib/wind/types.ts",
+   "label": "types.ts",
+   "type": "file",
+   "summary": ""
+  },
+  {
+   "id": "src/lib/wind/types.ts#ModelId",
+   "label": "ModelId",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/types.ts"
+  },
+  {
+   "id": "src/lib/wind/types.ts#ModelHour",
+   "label": "ModelHour",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/types.ts"
+  },
+  {
+   "id": "src/lib/wind/types.ts#ConsensusHour",
+   "label": "ConsensusHour",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/types.ts"
+  },
+  {
+   "id": "src/lib/wind/types.ts#ModelSkill",
+   "label": "ModelSkill",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/types.ts"
+  },
+  {
+   "id": "src/lib/wind/types.ts#Calibration",
+   "label": "Calibration",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/types.ts"
+  },
+  {
+   "id": "src/lib/wind/types.ts#ForecastResponse",
+   "label": "ForecastResponse",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/types.ts"
+  },
+  {
+   "id": "src/lib/wind/types.ts#StationReading",
+   "label": "StationReading",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/types.ts"
+  },
+  {
+   "id": "src/lib/wind/types.ts#StationResponse",
+   "label": "StationResponse",
+   "type": "symbol",
+   "summary": "exported from src/lib/wind/types.ts"
+  },
+  {
+   "id": "concept:consensus",
+   "label": "Consensus calibré",
+   "type": "concept",
+   "summary": "Moyenne pondérée de 7 modèles corrigés du biais local"
+  },
+  {
+   "id": "concept:calibration",
+   "label": "Calibration balise",
+   "type": "concept",
+   "summary": "Biais + facteur rafales par modèle vs balise Windguru #4164, heures 7-18"
+  },
+  {
+   "id": "concept:live-station",
+   "label": "Balise en direct",
+   "type": "concept",
+   "summary": "Windguru JSON (Faula) + Tempest (Cap Est, CKS_TOKEN), repli iframe"
+  },
+  {
+   "id": "concept:windguru-mode",
+   "label": "Mode Modèles (Windguru)",
+   "type": "concept",
+   "summary": "Tableau 7 jours, modèles empilés sous le consensus"
+  },
+  {
+   "id": "concept:synthese",
+   "label": "Vue Synthèse",
+   "type": "concept",
+   "summary": "Créneau navigable, étoiles, aile conseillée, grille horaire"
+  },
+  {
+   "id": "concept:wind-scale",
+   "label": "Échelle couleur vent",
+   "type": "concept",
+   "summary": "Échelle OKLCH façon Windguru"
+  }
+ ],
+ "edges": [
+  {
+   "source": "src/app/a-propos/page.tsx",
+   "target": "src/app/a-propos/page.tsx#metadata",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/a-propos/page.tsx",
+   "target": "src/app/a-propos/page.tsx#About",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/a-propos/page.tsx",
+   "target": "src/components/icons.tsx",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/app/a-propos/page.tsx",
+   "target": "src/components/icons.tsx#Icon",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/app/a-propos/page.tsx",
+   "target": "src/components/icons.tsx#KiteMark",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/app/a-propos/page.tsx",
+   "target": "src/lib/wind/models.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/app/a-propos/page.tsx",
+   "target": "src/lib/wind/models.ts#MODELS",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/app/a-propos/page.tsx",
+   "target": "src/lib/wind/scale.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/app/a-propos/page.tsx",
+   "target": "src/lib/wind/scale.ts#windColor",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/app/api/forecast/route.ts",
+   "target": "src/app/api/forecast/route.ts#dynamic",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/api/forecast/route.ts",
+   "target": "src/app/api/forecast/route.ts#GET",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/api/forecast/route.ts",
+   "target": "src/lib/wind/forecast.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/app/api/forecast/route.ts",
+   "target": "src/lib/wind/forecast.ts#buildForecast",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/app/api/station/route.ts",
+   "target": "src/app/api/station/route.ts#dynamic",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/api/station/route.ts",
+   "target": "src/app/api/station/route.ts#GET",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/api/station/route.ts",
+   "target": "src/lib/spots.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/app/api/station/route.ts",
+   "target": "src/lib/spots.ts#getSpot",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/app/api/station/route.ts",
+   "target": "src/lib/wind/stations.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/app/api/station/route.ts",
+   "target": "src/lib/wind/stations.ts#fetchStation",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/app/apple-icon.tsx",
+   "target": "src/app/apple-icon.tsx#runtime",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/apple-icon.tsx",
+   "target": "src/app/apple-icon.tsx#size",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/apple-icon.tsx",
+   "target": "src/app/apple-icon.tsx#contentType",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/apple-icon.tsx",
+   "target": "src/app/apple-icon.tsx#AppleIcon",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/icon.tsx",
+   "target": "src/app/icon.tsx#runtime",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/icon.tsx",
+   "target": "src/app/icon.tsx#size",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/icon.tsx",
+   "target": "src/app/icon.tsx#contentType",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/icon.tsx",
+   "target": "src/app/icon.tsx#Icon",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/layout.tsx",
+   "target": "src/app/layout.tsx#metadata",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/layout.tsx",
+   "target": "src/app/layout.tsx#viewport",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/layout.tsx",
+   "target": "src/app/layout.tsx#RootLayout",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/manifest.ts",
+   "target": "src/app/manifest.ts#manifest",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/opengraph-image.tsx",
+   "target": "src/app/opengraph-image.tsx#runtime",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/opengraph-image.tsx",
+   "target": "src/app/opengraph-image.tsx#alt",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/opengraph-image.tsx",
+   "target": "src/app/opengraph-image.tsx#size",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/opengraph-image.tsx",
+   "target": "src/app/opengraph-image.tsx#contentType",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/opengraph-image.tsx",
+   "target": "src/app/opengraph-image.tsx#OGImage",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/page.tsx",
+   "target": "src/app/page.tsx#Home",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/app/page.tsx",
+   "target": "src/components/ForecastApp.tsx",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/app/page.tsx",
+   "target": "src/components/ForecastApp.tsx#ForecastApp",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/app/page.tsx",
+   "target": "src/lib/spots.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/app/page.tsx",
+   "target": "src/lib/spots.ts#getSpot",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayDetail.tsx",
+   "target": "src/components/DayDetail.tsx#DayDetail",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayDetail.tsx",
+   "target": "src/lib/time.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayDetail.tsx",
+   "target": "src/lib/time.ts#fmtDayMonth",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayDetail.tsx",
+   "target": "src/lib/time.ts#fmtHour",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayDetail.tsx",
+   "target": "src/lib/time.ts#fmtWeekday",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayDetail.tsx",
+   "target": "src/lib/time.ts#localHour",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayDetail.tsx",
+   "target": "src/lib/wind/days.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayDetail.tsx",
+   "target": "src/lib/wind/days.ts#DaySummary",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayDetail.tsx",
+   "target": "src/lib/wind/scale.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayDetail.tsx",
+   "target": "src/lib/wind/scale.ts#dirLabel",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayDetail.tsx",
+   "target": "src/lib/wind/scale.ts#kiteSize",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayDetail.tsx",
+   "target": "src/lib/wind/types.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayDetail.tsx",
+   "target": "src/lib/wind/types.ts#Calibration",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayDetail.tsx",
+   "target": "src/lib/wind/types.ts#ModelSkill",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayDetail.tsx",
+   "target": "src/components/HourGrid.tsx",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayDetail.tsx",
+   "target": "src/components/HourGrid.tsx#HourGrid",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayDetail.tsx",
+   "target": "src/components/icons.tsx",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayDetail.tsx",
+   "target": "src/components/icons.tsx#DirArrow",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayDetail.tsx",
+   "target": "src/components/icons.tsx#Icon",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayDetail.tsx",
+   "target": "src/components/WindChart.tsx",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayDetail.tsx",
+   "target": "src/components/WindChart.tsx#WindChart",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayStrip.tsx",
+   "target": "src/components/DayStrip.tsx#DayStrip",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayStrip.tsx",
+   "target": "src/lib/time.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayStrip.tsx",
+   "target": "src/lib/time.ts#fmtWeekday",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayStrip.tsx",
+   "target": "src/lib/wind/days.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayStrip.tsx",
+   "target": "src/lib/wind/days.ts#DaySummary",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayStrip.tsx",
+   "target": "src/lib/wind/scale.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayStrip.tsx",
+   "target": "src/lib/wind/scale.ts#windColor",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayStrip.tsx",
+   "target": "src/components/icons.tsx",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/DayStrip.tsx",
+   "target": "src/components/icons.tsx#Stars",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/components/ForecastApp.tsx#ForecastApp",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/lib/spots.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/lib/spots.ts#getSpot",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/lib/spots.ts#REFERENCE_SPOT",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/lib/spots.ts#SPOTS",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/lib/spots.ts#SpotId",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/lib/prefs.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/lib/prefs.ts#usePref",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/lib/time.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/lib/time.ts#fmtClock",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/lib/time.ts#localDate",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/lib/time.ts#localHour",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/lib/time.ts#nowSec",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/lib/wind/days.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/lib/wind/days.ts#summarizeDays",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/lib/wind/types.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/lib/wind/types.ts#ForecastResponse",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/lib/wind/types.ts#StationResponse",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/components/DayDetail.tsx",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/components/DayDetail.tsx#DayDetail",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/components/DayStrip.tsx",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/components/DayStrip.tsx#DayStrip",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/components/icons.tsx",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/components/icons.tsx#Icon",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/components/icons.tsx#KiteMark",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/components/LiveStation.tsx",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/components/LiveStation.tsx#LiveStation",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/components/ModelTable.tsx",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/components/ModelTable.tsx#ModelTable",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/components/RadarMap.tsx",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ForecastApp.tsx",
+   "target": "src/components/RadarMap.tsx#RadarMap",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/HourGrid.tsx",
+   "target": "src/components/HourGrid.tsx#HourGrid",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/components/HourGrid.tsx",
+   "target": "src/lib/time.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/HourGrid.tsx",
+   "target": "src/lib/time.ts#localHour",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/HourGrid.tsx",
+   "target": "src/lib/wind/scale.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/HourGrid.tsx",
+   "target": "src/lib/wind/scale.ts#confidence",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/HourGrid.tsx",
+   "target": "src/lib/wind/scale.ts#dirLabel",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/HourGrid.tsx",
+   "target": "src/lib/wind/scale.ts#kiteSize",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/HourGrid.tsx",
+   "target": "src/lib/wind/scale.ts#windColor",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/HourGrid.tsx",
+   "target": "src/lib/wind/types.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/HourGrid.tsx",
+   "target": "src/lib/wind/types.ts#ConsensusHour",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/HourGrid.tsx",
+   "target": "src/lib/wind/types.ts#ModelSkill",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/HourGrid.tsx",
+   "target": "src/components/icons.tsx",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/HourGrid.tsx",
+   "target": "src/components/icons.tsx#DirArrow",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/HourGrid.tsx",
+   "target": "src/components/icons.tsx#Icon",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/icons.tsx",
+   "target": "src/components/icons.tsx#KiteMark",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/components/icons.tsx",
+   "target": "src/components/icons.tsx#DirArrow",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/components/icons.tsx",
+   "target": "src/components/icons.tsx#Stars",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/components/icons.tsx",
+   "target": "src/components/icons.tsx#Icon",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/components/icons.tsx",
+   "target": "src/lib/wind/scale.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/icons.tsx",
+   "target": "src/lib/wind/scale.ts#dirLabel",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/LiveStation.tsx",
+   "target": "src/components/LiveStation.tsx#LiveStation",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/components/LiveStation.tsx",
+   "target": "src/lib/time.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/LiveStation.tsx",
+   "target": "src/lib/time.ts#fmtAgo",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/LiveStation.tsx",
+   "target": "src/lib/time.ts#fmtClock",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/LiveStation.tsx",
+   "target": "src/lib/time.ts#fmtHour",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/LiveStation.tsx",
+   "target": "src/lib/time.ts#localHour",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/LiveStation.tsx",
+   "target": "src/lib/wind/scale.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/LiveStation.tsx",
+   "target": "src/lib/wind/scale.ts#dirLabel",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/LiveStation.tsx",
+   "target": "src/lib/wind/scale.ts#kiteability",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/LiveStation.tsx",
+   "target": "src/lib/wind/scale.ts#windColor",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/LiveStation.tsx",
+   "target": "src/lib/wind/types.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/LiveStation.tsx",
+   "target": "src/lib/wind/types.ts#ConsensusHour",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/LiveStation.tsx",
+   "target": "src/lib/wind/types.ts#StationResponse",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/LiveStation.tsx",
+   "target": "src/components/icons.tsx",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/LiveStation.tsx",
+   "target": "src/components/icons.tsx#DirArrow",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ModelTable.tsx",
+   "target": "src/components/ModelTable.tsx#ModelTable",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ModelTable.tsx",
+   "target": "src/lib/time.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ModelTable.tsx",
+   "target": "src/lib/time.ts#fmtWeekday",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ModelTable.tsx",
+   "target": "src/lib/time.ts#localDate",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ModelTable.tsx",
+   "target": "src/lib/time.ts#localHour",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ModelTable.tsx",
+   "target": "src/lib/wind/scale.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ModelTable.tsx",
+   "target": "src/lib/wind/scale.ts#dirLabel",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ModelTable.tsx",
+   "target": "src/lib/wind/scale.ts#windColor",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ModelTable.tsx",
+   "target": "src/lib/wind/types.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ModelTable.tsx",
+   "target": "src/lib/wind/types.ts#ConsensusHour",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ModelTable.tsx",
+   "target": "src/lib/wind/types.ts#ForecastResponse",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ModelTable.tsx",
+   "target": "src/lib/wind/types.ts#ModelSkill",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ModelTable.tsx",
+   "target": "src/components/icons.tsx",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/ModelTable.tsx",
+   "target": "src/components/icons.tsx#DirArrow",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/RadarMap.tsx",
+   "target": "src/components/RadarMap.tsx#RadarMap",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/components/RadarMap.tsx",
+   "target": "src/components/icons.tsx",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/RadarMap.tsx",
+   "target": "src/components/icons.tsx#Icon",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/WindChart.tsx",
+   "target": "src/components/WindChart.tsx#WindChart",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/components/WindChart.tsx",
+   "target": "src/lib/time.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/WindChart.tsx",
+   "target": "src/lib/time.ts#localHour",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/components/WindChart.tsx",
+   "target": "src/lib/wind/types.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/components/WindChart.tsx",
+   "target": "src/lib/wind/types.ts#ConsensusHour",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/prefs.ts",
+   "target": "src/lib/prefs.ts#usePref",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/spots.ts",
+   "target": "src/lib/spots.ts#SpotId",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/spots.ts",
+   "target": "src/lib/spots.ts#StationConfig",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/spots.ts",
+   "target": "src/lib/spots.ts#Spot",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/spots.ts",
+   "target": "src/lib/spots.ts#SPOTS",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/spots.ts",
+   "target": "src/lib/spots.ts#REFERENCE_SPOT",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/spots.ts",
+   "target": "src/lib/spots.ts#getSpot",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/time.ts",
+   "target": "src/lib/time.ts#TZ",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/time.ts",
+   "target": "src/lib/time.ts#localHour",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/time.ts",
+   "target": "src/lib/time.ts#localDate",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/time.ts",
+   "target": "src/lib/time.ts#nowSec",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/time.ts",
+   "target": "src/lib/time.ts#fmtHour",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/time.ts",
+   "target": "src/lib/time.ts#fmtClock",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/time.ts",
+   "target": "src/lib/time.ts#fmtWeekday",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/time.ts",
+   "target": "src/lib/time.ts#fmtDayMonth",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/time.ts",
+   "target": "src/lib/time.ts#fmtAgo",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/days.ts",
+   "target": "src/lib/wind/days.ts#KITE_FIRST_HOUR",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/days.ts",
+   "target": "src/lib/wind/days.ts#KITE_LAST_HOUR",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/days.ts",
+   "target": "src/lib/wind/days.ts#DaySummary",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/days.ts",
+   "target": "src/lib/wind/days.ts#kiteHours",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/days.ts",
+   "target": "src/lib/wind/days.ts#summarizeDays",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/days.ts",
+   "target": "src/lib/time.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/days.ts",
+   "target": "src/lib/time.ts#localDate",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/days.ts",
+   "target": "src/lib/time.ts#localHour",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/days.ts",
+   "target": "src/lib/wind/scale.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/days.ts",
+   "target": "src/lib/wind/scale.ts#confidence",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/days.ts",
+   "target": "src/lib/wind/scale.ts#isOffshore",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/days.ts",
+   "target": "src/lib/wind/scale.ts#Confidence",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/days.ts",
+   "target": "src/lib/wind/types.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/days.ts",
+   "target": "src/lib/wind/types.ts#ConsensusHour",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/days.ts",
+   "target": "src/lib/wind/types.ts#ForecastResponse",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/forecast.ts",
+   "target": "src/lib/wind/forecast.ts#buildForecast",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/forecast.ts",
+   "target": "src/lib/spots.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/forecast.ts",
+   "target": "src/lib/spots.ts#getSpot",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/forecast.ts",
+   "target": "src/lib/spots.ts#REFERENCE_SPOT",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/forecast.ts",
+   "target": "src/lib/spots.ts#Spot",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/forecast.ts",
+   "target": "src/lib/time.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/forecast.ts",
+   "target": "src/lib/time.ts#localDate",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/forecast.ts",
+   "target": "src/lib/time.ts#localHour",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/forecast.ts",
+   "target": "src/lib/wind/models.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/forecast.ts",
+   "target": "src/lib/wind/models.ts#MODELS",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/forecast.ts",
+   "target": "src/lib/wind/models.ts#ModelDef",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/forecast.ts",
+   "target": "src/lib/wind/stations.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/forecast.ts",
+   "target": "src/lib/wind/stations.ts#fetchStationHistory",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/forecast.ts",
+   "target": "src/lib/wind/types.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/forecast.ts",
+   "target": "src/lib/wind/types.ts#Calibration",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/forecast.ts",
+   "target": "src/lib/wind/types.ts#ConsensusHour",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/forecast.ts",
+   "target": "src/lib/wind/types.ts#ForecastResponse",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/forecast.ts",
+   "target": "src/lib/wind/types.ts#ModelId",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/forecast.ts",
+   "target": "src/lib/wind/types.ts#ModelSkill",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/forecast.ts",
+   "target": "src/lib/wind/types.ts#StationReading",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/models.ts",
+   "target": "src/lib/wind/models.ts#ModelDef",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/models.ts",
+   "target": "src/lib/wind/models.ts#MODELS",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/models.ts",
+   "target": "src/lib/wind/types.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/models.ts",
+   "target": "src/lib/wind/types.ts#ModelId",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/scale.ts",
+   "target": "src/lib/wind/scale.ts#windColor",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/scale.ts",
+   "target": "src/lib/wind/scale.ts#Kiteability",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/scale.ts",
+   "target": "src/lib/wind/scale.ts#kiteability",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/scale.ts",
+   "target": "src/lib/wind/scale.ts#dirLabel",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/scale.ts",
+   "target": "src/lib/wind/scale.ts#isOffshore",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/scale.ts",
+   "target": "src/lib/wind/scale.ts#kiteSize",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/scale.ts",
+   "target": "src/lib/wind/scale.ts#Confidence",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/scale.ts",
+   "target": "src/lib/wind/scale.ts#confidence",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/stations.ts",
+   "target": "src/lib/wind/stations.ts#fetchStationHistory",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/stations.ts",
+   "target": "src/lib/wind/stations.ts#fetchStation",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/stations.ts",
+   "target": "src/lib/spots.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/stations.ts",
+   "target": "src/lib/spots.ts#Spot",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/stations.ts",
+   "target": "src/lib/wind/types.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/stations.ts",
+   "target": "src/lib/wind/types.ts#StationReading",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/stations.ts",
+   "target": "src/lib/wind/types.ts#StationResponse",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/types.ts",
+   "target": "src/lib/wind/types.ts#ModelId",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/types.ts",
+   "target": "src/lib/wind/types.ts#ModelHour",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/types.ts",
+   "target": "src/lib/wind/types.ts#ConsensusHour",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/types.ts",
+   "target": "src/lib/wind/types.ts#ModelSkill",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/types.ts",
+   "target": "src/lib/wind/types.ts#Calibration",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/types.ts",
+   "target": "src/lib/wind/types.ts#ForecastResponse",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/types.ts",
+   "target": "src/lib/wind/types.ts#StationReading",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/types.ts",
+   "target": "src/lib/wind/types.ts#StationResponse",
+   "relation": "defines",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/types.ts",
+   "target": "src/lib/spots.ts",
+   "relation": "imports",
+   "weight": 1
+  },
+  {
+   "source": "src/lib/wind/types.ts",
+   "target": "src/lib/spots.ts#SpotId",
+   "relation": "uses",
+   "weight": 1
+  },
+  {
+   "source": "concept:consensus",
+   "target": "src/lib/wind/forecast.ts",
+   "relation": "implemented_in",
+   "weight": 2
+  },
+  {
+   "source": "concept:consensus",
+   "target": "src/lib/wind/models.ts",
+   "relation": "implemented_in",
+   "weight": 2
+  },
+  {
+   "source": "concept:calibration",
+   "target": "src/lib/wind/forecast.ts",
+   "relation": "implemented_in",
+   "weight": 2
+  },
+  {
+   "source": "concept:calibration",
+   "target": "src/lib/wind/stations.ts",
+   "relation": "implemented_in",
+   "weight": 2
+  },
+  {
+   "source": "concept:live-station",
+   "target": "src/lib/wind/stations.ts",
+   "relation": "implemented_in",
+   "weight": 2
+  },
+  {
+   "source": "concept:live-station",
+   "target": "src/components/LiveStation.tsx",
+   "relation": "implemented_in",
+   "weight": 2
+  },
+  {
+   "source": "concept:live-station",
+   "target": "src/app/api/station/route.ts",
+   "relation": "implemented_in",
+   "weight": 2
+  },
+  {
+   "source": "concept:windguru-mode",
+   "target": "src/components/ModelTable.tsx",
+   "relation": "implemented_in",
+   "weight": 2
+  },
+  {
+   "source": "concept:synthese",
+   "target": "src/components/DayDetail.tsx",
+   "relation": "implemented_in",
+   "weight": 2
+  },
+  {
+   "source": "concept:synthese",
+   "target": "src/components/HourGrid.tsx",
+   "relation": "implemented_in",
+   "weight": 2
+  },
+  {
+   "source": "concept:synthese",
+   "target": "src/components/WindChart.tsx",
+   "relation": "implemented_in",
+   "weight": 2
+  },
+  {
+   "source": "concept:synthese",
+   "target": "src/lib/wind/days.ts",
+   "relation": "implemented_in",
+   "weight": 2
+  },
+  {
+   "source": "concept:wind-scale",
+   "target": "src/lib/wind/scale.ts",
+   "relation": "implemented_in",
+   "weight": 2
+  }
+ ]
+}
